@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>{{ profile.display_name }}</title>
+</head>
+<body>
+    <h1>{{ profile.display_name }}</h1>
+
+    <p><strong>Username:</strong> {{ profile_user.username }}</p>
+    <p><strong>Experience:</strong> {{ profile.get_experience_level_display }}</p>
+
+    {% if profile.bio %}
+        <p>{{ profile.bio }}</p>
+    {% else %}
+        <p>No bio provided.</p>
+    {% endif %}
+</body>
+</html>
