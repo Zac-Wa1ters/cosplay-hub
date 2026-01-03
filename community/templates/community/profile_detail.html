@@ -1,18 +1,33 @@
-<!DOCTYPE html>
-<html>
-<head>
-    <title>{{ profile.display_name }}</title>
-</head>
-<body>
-    <h1>{{ profile.display_name }}</h1>
+{% extends "base.html" %}
 
-    <p><strong>Username:</strong> {{ profile_user.username }}</p>
-    <p><strong>Experience:</strong> {{ profile.get_experience_level_display }}</p>
+{% block title %}
+    {{ profile.display_name }} — Profile
+{% endblock %}
 
-    {% if profile.bio %}
-        <p>{{ profile.bio }}</p>
-    {% else %}
-        <p>No bio provided.</p>
-    {% endif %}
-</body>
-</html>
+{% block content %}
+
+<h1>{{ profile.display_name }}</h1>
+
+{% if profile.avatar %}
+    <img src="{{ profile.avatar.url }}" style="max-width:200px;">
+{% endif %}
+
+<p><strong>Experience:</strong> {{ profile.get_experience_level_display }}</p>
+
+<h2>Cosplays</h2>
+
+{% if cosplays %}
+    <ul>
+        {% for cosplay in cosplays %}
+            <li>
+                <a href="{% url 'cosplay_detail' cosplay.id %}">
+                    {{ cosplay.title }}
+                </a>
+            </li>
+        {% endfor %}
+    </ul>
+{% else %}
+    <p>No cosplays yet.</p>
+{% endif %}
+
+{% endblock %}

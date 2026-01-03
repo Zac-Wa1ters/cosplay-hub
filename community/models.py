@@ -20,3 +20,80 @@ class Profile(models.Model):
 
     def __str__(self):
         return self.display_name
+
+class Cosplay(models.Model):
+
+    STATUS_CHOICES = [
+        ("planning", "Planning"),
+        ("in_progress", "In Progress"),
+        ("completed", "Completed"),
+    ]
+
+    VISIBILITY_CHOICES = [
+        ("public", "Public"),
+        ("followers", "Followers Only"),
+        ("private", "Private"),
+    ]
+
+    owner = models.ForeignKey(
+        User,
+        on_delete=models.CASCADE,
+        related_name="cosplays"
+    )
+
+    title = models.CharField(max_length=150)
+    character_name = models.CharField(max_length=150)
+    franchise = models.CharField(max_length=150, blank=True)
+
+    description = models.TextField(blank=True)
+
+    status = models.CharField(
+        max_length=20,
+        choices=STATUS_CHOICES,
+        default="planning"
+    )
+
+    visibility = models.CharField(
+        max_length=20,
+        choices=VISIBILITY_CHOICES,
+        default="public"
+    )
+
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+
+    archived = models.BooleanField(default=False)
+
+    def __str__(self):
+        return f"{self.title} ({self.owner.username})"
+
+class CosplayEntry(models.Model):
+
+
+    cosplay = models.ForeignKey(
+        Cosplay,
+        on_delete=models.CASCADE,
+        related_name="entries"
+    )
+
+    content = models.TextField(blank=True)
+
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return f"Entry for {self.cosplay.title}"
+
+class CosplayEntryImage(models.Model):
+
+    entry = models.ForeignKey(
+        CosplayEntry,
+        on_delete=models.CASCADE,
+        related_name="images"
+    )
+
+    image = models.ImageField(upload_to="cosplay_entries/")
+
+    uploaded_at = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return f"Image for entry {self.entry.id}"

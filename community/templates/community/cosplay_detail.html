@@ -1,0 +1,47 @@
+{% extends "base.html" %}
+
+{% block title %}
+    {{ cosplay.title }} — Cosplay Hub
+{% endblock %}
+
+{% block content %}
+
+<h1>{{ cosplay.title }}</h1>
+<p>{{ cosplay.character_name }}</p>
+
+{% if request.user == cosplay.owner %}
+    <p>
+        <a href="{% url 'cosplay_entry_create' cosplay.id %}">
+            Add Entry
+        </a>
+    </p>
+{% endif %}
+
+<h2>Entries</h2>
+
+{% if entries %}
+    {% for entry in entries %}
+        <div style="margin-bottom: 20px;">
+            {% if entry.content %}
+                <p>{{ entry.content }}</p>
+            {% endif %}
+
+            {% for image in entry.images.all %}
+                <img src="{{ image.image.url }}" style="max-width:200px;">
+            {% endfor %}
+            {% if request.user == cosplay.owner %}
+                <p>
+                    <a href="{% url 'cosplay_entry_edit' entry.id %}">Edit</a> |
+                    <a href="{% url 'cosplay_entry_delete' entry.id %}">Delete</a>
+                </p>
+            {% endif %}
+            <small>
+                {{ entry.created_at|date:"M d, Y · P" }}
+            </small>
+        </div>
+    {% endfor %}
+{% else %}
+    <p>No entries yet.</p>
+{% endif %}
+
+{% endblock %}

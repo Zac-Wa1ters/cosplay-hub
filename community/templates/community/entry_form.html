@@ -1,0 +1,22 @@
+{% extends "base.html" %}
+
+{% block title %}
+    Add Entry — {{ cosplay.title }}
+{% endblock %}
+
+{% block content %}
+
+<h1>Add Entry for {{ cosplay.title }}</h1>
+
+<form method="post" enctype="multipart/form-data">
+    {% csrf_token %}
+
+    {{ form.as_p }}
+
+    <label>Images</label>
+    <input type="file" name="images" multiple>
+
+    <button type="submit">Post</button>
+</form>
+
+{% endblock %}
