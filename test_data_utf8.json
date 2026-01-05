@@ -1,0 +1,221 @@
+[
+{
+  "model": "auth.user",
+  "pk": 1,
+  "fields": {
+    "password": "pbkdf2_sha256$1200000$Uqht6rEL3gbhozrxssQTM1$KrL4IJ7Ej/0sQysXrm+j10Gdb7XdeZFqw9KmSkkK9t0=",
+    "last_login": "2026-01-03T04:47:26.216Z",
+    "is_superuser": true,
+    "username": "Zac",
+    "first_name": "",
+    "last_name": "",
+    "email": "z.walters90@gmail.com",
+    "is_staff": true,
+    "is_active": true,
+    "date_joined": "2025-12-29T17:38:17.861Z",
+    "groups": [],
+    "user_permissions": []
+  }
+},
+{
+  "model": "auth.user",
+  "pk": 2,
+  "fields": {
+    "password": "pbkdf2_sha256$1200000$DecZfrQyBqmfKuHjDfKbOH$63DHgxpa8hPOAfDpvzuETSuyQDFB72jhd4/0TrmdNNY=",
+    "last_login": "2026-01-03T04:58:16.187Z",
+    "is_superuser": false,
+    "username": "Caz",
+    "first_name": "",
+    "last_name": "",
+    "email": "",
+    "is_staff": true,
+    "is_active": true,
+    "date_joined": "2025-12-29T17:43:25Z",
+    "groups": [],
+    "user_permissions": []
+  }
+},
+{
+  "model": "auth.user",
+  "pk": 3,
+  "fields": {
+    "password": "pbkdf2_sha256$1200000$35evfGjSdSYnOvyZsbxDYQ$PEdkb8i6JpB4+I3wnC69zz9s13DAQ9vD5e6u2oBnJms=",
+    "last_login": "2026-01-03T04:11:31.687Z",
+    "is_superuser": false,
+    "username": "testprofile",
+    "first_name": "Test",
+    "last_name": "Test",
+    "email": "",
+    "is_staff": true,
+    "is_active": true,
+    "date_joined": "2026-01-03T04:00:01Z",
+    "groups": [],
+    "user_permissions": []
+  }
+},
+{
+  "model": "community.profile",
+  "pk": 1,
+  "fields": {
+    "user": 1,
+    "display_name": "Zac",
+    "bio": "Website creator",
+    "location": "Mississippi",
+    "experience_level": "casual",
+    "avatar": "avatars/494735592_10229216304974078_1203465083677106022_n.jpg"
+  }
+},
+{
+  "model": "community.profile",
+  "pk": 2,
+  "fields": {
+    "user": 2,
+    "display_name": "Caz",
+    "bio": "",
+    "location": "",
+    "experience_level": "casual",
+    "avatar": ""
+  }
+},
+{
+  "model": "community.profile",
+  "pk": 3,
+  "fields": {
+    "user": 3,
+    "display_name": "testprofile",
+    "bio": "",
+    "location": "",
+    "experience_level": "casual",
+    "avatar": ""
+  }
+},
+{
+  "model": "community.cosplay",
+  "pk": 1,
+  "fields": {
+    "owner": 2,
+    "title": "Tupelo Con 2022",
+    "character_name": "Obi-Wan Kenobi",
+    "franchise": "Star Wars",
+    "description": "I got to cosplay Obi-Wan Kenobi as seen in the show Kenobi.",
+    "status": "completed",
+    "visibility": "public",
+    "created_at": "2025-12-31T21:40:08.112Z",
+    "updated_at": "2025-12-31T21:40:08.112Z",
+    "archived": false
+  }
+},
+{
+  "model": "community.cosplay",
+  "pk": 4,
+  "fields": {
+    "owner": 1,
+    "title": "MS Anime Fest",
+    "character_name": "Thor",
+    "franchise": "MCU",
+    "description": "",
+    "status": "planning",
+    "visibility": "public",
+    "created_at": "2025-12-31T22:03:42.016Z",
+    "updated_at": "2025-12-31T22:03:42.016Z",
+    "archived": false
+  }
+},
+{
+  "model": "community.cosplay",
+  "pk": 5,
+  "fields": {
+    "owner": 3,
+    "title": "testCosplay",
+    "character_name": "None",
+    "franchise": "",
+    "description": "",
+    "status": "planning",
+    "visibility": "private",
+    "created_at": "2026-01-03T04:00:43.589Z",
+    "updated_at": "2026-01-03T04:13:33.854Z",
+    "archived": false
+  }
+},
+{
+  "model": "community.cosplayentry",
+  "pk": 5,
+  "fields": {
+    "cosplay": 4,
+    "content": "Had a blast as \"Ben\" Kenobi in Tupelo!",
+    "created_at": "2026-01-03T03:08:46.906Z"
+  }
+},
+{
+  "model": "community.cosplayentry",
+  "pk": 6,
+  "fields": {
+    "cosplay": 5,
+    "content": "This is a test",
+    "created_at": "2026-01-03T04:01:09.277Z"
+  }
+},
+{
+  "model": "community.cosplayentry",
+  "pk": 7,
+  "fields": {
+    "cosplay": 1,
+    "content": "Had a blast as Ben Kenobi",
+    "created_at": "2026-01-03T04:56:14.539Z"
+  }
+},
+{
+  "model": "community.cosplayentryimage",
+  "pk": 12,
+  "fields": {
+    "entry": 5,
+    "image": "cosplay_entries/obi3_HNALAF2.jpg",
+    "uploaded_at": "2026-01-03T03:08:46.910Z"
+  }
+},
+{
+  "model": "community.cosplayentryimage",
+  "pk": 13,
+  "fields": {
+    "entry": 5,
+    "image": "cosplay_entries/obi1_IoTVyV4.jpg",
+    "uploaded_at": "2026-01-03T03:08:46.914Z"
+  }
+},
+{
+  "model": "community.cosplayentryimage",
+  "pk": 14,
+  "fields": {
+    "entry": 5,
+    "image": "cosplay_entries/obi_CwUCCHt.jpg",
+    "uploaded_at": "2026-01-03T03:08:46.917Z"
+  }
+},
+{
+  "model": "community.cosplayentryimage",
+  "pk": 15,
+  "fields": {
+    "entry": 6,
+    "image": "cosplay_entries/obi_RQ77jfR.jpg",
+    "uploaded_at": "2026-01-03T04:01:52.515Z"
+  }
+},
+{
+  "model": "community.cosplayentryimage",
+  "pk": 16,
+  "fields": {
+    "entry": 6,
+    "image": "cosplay_entries/obi3_3K2wWl0.jpg",
+    "uploaded_at": "2026-01-03T04:02:06.432Z"
+  }
+},
+{
+  "model": "community.cosplayentryimage",
+  "pk": 17,
+  "fields": {
+    "entry": 7,
+    "image": "cosplay_entries/obi_ThSRJBc.jpg",
+    "uploaded_at": "2026-01-03T04:56:36.595Z"
+  }
+}
+]

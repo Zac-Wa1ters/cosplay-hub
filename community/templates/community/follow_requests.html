@@ -1,0 +1,14 @@
+{% extends "base.html" %}
+{% block content %}
+<h1>Follow Requests</h1>
+
+{% for req in requests %}
+    <p>
+        {{ req.follower.username }}
+        <a href="{% url 'approve_follow' req.id %}">Approve</a>
+        <a href="{% url 'deny_follow' req.id %}">Deny</a>
+    </p>
+{% empty %}
+    <p>No pending requests.</p>
+{% endfor %}
+{% endblock %}

@@ -2,38 +2,42 @@
 
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>
-        {% block title %}
-            Cosplay Hub
-        {% endblock %}
-    </title>
-    <link rel="stylesheet" href="{% static 'community/css/style.css' %}">
-</head>
-<body>
-
+  <head>
+    <meta charset="UTF-8" />
+    <title>{% block title %} Cosplay Hub {% endblock %}</title>
+    <link rel="stylesheet" href="{% static 'community/css/style.css' %}" />
+  </head>
+  <body>
     <header>
-        <h1>
-            <a href="/">Cosplay Hub</a>
-        </h1>
+      <h1>
+        <a href="{% url 'hub_home' %}">Cosplay Hub</a>
+      </h1>
 
-        <nav>
-            {% if user.is_authenticated %}
-                <a href="{% url 'profile_detail' user.username %}">My Profile</a> |
-                <a href="{% url 'profile_edit' %}">Edit Profile</a> |
-                <a href="/admin/logout/">Logout</a>
-            {% else %}
-                <a href="/admin/login/">Login</a>
-            {% endif %}
-        </nav>
-        <hr>
+      <nav class="main-nav">
+        {% if user.is_authenticated %}
+        <a href="{% url 'profile_detail' user.username %}" class="nav-link"
+          >My Profile</a
+        >
+        <a href="{% url 'profile_edit' %}" class="nav-link">Edit Profile</a>
+
+        {% if pending_follow_requests > 0 %}
+            <a href="{% url 'follow_requests' %}" class="nav-link">
+                Follow Requests ({{ pending_follow_requests }})
+            </a>
+        {% endif %}        
+
+        <form method="post" action="{% url 'logout' %}" class="logout-form">
+          {% csrf_token %}
+          <button type="submit" class="nav-link logout-button">Logout</button>
+        </form>
+        {% else %}
+        <a href="{% url 'login' %}" class="nav-link">Login</a>
+        {% endif %}
+      </nav>
+
+      <hr />
     </header>
 
-    <main>
-        {% block content %}
-        {% endblock %}
-    </main>
-
-</body>
+    <main>{% block content %} {% endblock %}</main>
+  </body>
 </html>

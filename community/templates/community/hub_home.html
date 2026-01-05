@@ -1,0 +1,19 @@
+{% extends "base.html" %}
+
+{% block title %}Cosplay Hub{% endblock %}
+
+{% block content %}
+<h1>Welcome to Cosplay Hub</h1>
+
+{% if user.is_authenticated %}
+    <p>
+        <a href="{% url 'profile_detail' user.username %}">
+            Go to your profile
+        </a>
+    </p>
+{% else %}
+    <p>
+        <a href="{% url 'login' %}">Log in</a> to get started.
+    </p>
+{% endif %}
+{% endblock %}

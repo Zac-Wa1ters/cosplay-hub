@@ -2,13 +2,30 @@ from django.shortcuts import render, get_object_or_404, redirect
 from django.http import HttpResponseForbidden
 from django.contrib.auth.models import User
 from django.contrib.auth.decorators import login_required
-from .forms import ProfileForm, CosplayForm, CosplayEntryForm
-from .models import Cosplay, CosplayEntry, CosplayEntryImage
+from .forms import *
+from .models import *
+
+
+def hub_home(request):
+    return render(request, "community/hub_home.html")
 
 
 def profile_detail(request, username):
     user = get_object_or_404(User, username=username)
     profile = user.profile
+
+    follow_status = None
+
+    if request.user.is_authenticated and request.user != user:
+        follow = Follow.objects.filter(
+            follower=request.user,
+            following=user,
+        ).first()
+
+        if follow:
+            follow_status = follow.status
+        else:
+            follow_status = "not_following"
 
     if request.user == user:
         cosplays = user.cosplays.filter(archived=False)
@@ -22,9 +39,11 @@ def profile_detail(request, username):
         "profile_user": user,
         "profile": profile,
         "cosplays": cosplays,
+        "follow_status": follow_status,
     }
 
     return render(request, "community/profile_detail.html", context)
+
 
 
 def cosplay_detail(request, cosplay_id):
@@ -35,8 +54,14 @@ def cosplay_detail(request, cosplay_id):
         if request.user != cosplay.owner:
             return HttpResponseForbidden()
 
-    if cosplay.visibility == "followers":
-        if request.user != cosplay.owner:
+    elif cosplay.visibility == "followers":
+        is_follower = Follow.objects.filter(
+            follower=request.user,
+            following=cosplay.owner,
+            status="approved"
+        ).exists()
+
+        if request.user != cosplay.owner and not is_follower:
             return HttpResponseForbidden()
 
     entries = cosplay.entries.prefetch_related("images").order_by("-created_at")
@@ -173,3 +198,60 @@ def cosplay_entry_delete(request, entry_id):
             "cosplay": cosplay,
         }
     )
+
+@login_required
+def follow_user(request, username):
+    if request.method != "POST":
+        return HttpResponseForbidden()
+
+    target = get_object_or_404(User, username=username)
+
+    if target == request.user:
+        return redirect("profile_detail", username=username)
+
+    profile = target.profile
+
+    follow, created = Follow.objects.get_or_create(
+        follower=request.user,
+        following=target,
+    )
+
+    if created:
+        if profile.privacy == "public":
+            follow.status = "approved"
+        else:
+            follow.status = "pending"
+        follow.save()
+
+    return redirect("profile_detail", username=username)
+
+
+
+
+@login_required
+def follow_requests(request):
+    requests = Follow.objects.filter(
+        following=request.user,
+        status="pending"
+    )
+
+    return render(
+        request,
+        "community/follow_requests.html",
+        {"requests": requests}
+    )
+
+@login_required
+def approve_follow(request, follow_id):
+    follow = get_object_or_404(Follow, id=follow_id, following=request.user)
+    follow.status = "approved"
+    follow.save()
+    return redirect("follow_requests")
+
+
+@login_required
+def deny_follow(request, follow_id):
+    follow = get_object_or_404(Follow, id=follow_id, following=request.user)
+    follow.status = "denied"
+    follow.save()
+    return redirect("follow_requests")

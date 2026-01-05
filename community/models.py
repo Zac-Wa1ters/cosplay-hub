@@ -2,11 +2,15 @@ from django.db import models
 from django.contrib.auth.models import User
 # Create your models here.
 class Profile(models.Model):
+
+
     
+
     user = models.OneToOneField(User, on_delete=models.CASCADE)
     display_name = models.CharField(max_length=100)
     bio = models.TextField(blank = True)
     location = models.CharField(max_length=100, blank = True)
+
     EXPERIENCE_LEVELS = [
         ("casual", "Casual (Non-Competitive / Just for Fun)"),
         ("showcase", "Showcase (Exhibitions, Photoshoots, No Judging)"),
@@ -16,6 +20,18 @@ class Profile(models.Model):
     ]
 
     experience_level = models.CharField(max_length=50, choices=EXPERIENCE_LEVELS, default="casual")
+
+    PRIVACY_CHOICES = [
+        ("public", "Public"),
+        ("private", "Private"),
+    ]
+    privacy = models.CharField(
+        max_length=10,
+        choices=PRIVACY_CHOICES,
+        default="public",
+    )
+
+
     avatar = models.ImageField(upload_to="avatars/", blank = True, null = True)
 
     def __str__(self):
@@ -97,3 +113,39 @@ class CosplayEntryImage(models.Model):
 
     def __str__(self):
         return f"Image for entry {self.entry.id}"
+
+
+
+class Follow(models.Model):
+
+    STATUS_CHOICES = [
+        ("pending", "Pending"),
+        ("approved", "Approved"),
+        ("denied", "Denied"),
+    ]
+
+    follower = models.ForeignKey(
+        User,
+        on_delete=models.CASCADE,
+        related_name="following_relationships",
+    )
+
+    following = models.ForeignKey(
+        User,
+        on_delete=models.CASCADE,
+        related_name="follower_relationships",
+    )
+
+    status = models.CharField(
+        max_length=10,
+        choices=STATUS_CHOICES,
+        default="pending",
+    )
+
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    class Meta:
+        unique_together = ("follower", "following")
+
+    def __str__(self):
+        return f"{self.follower} → {self.following} ({self.status})"
