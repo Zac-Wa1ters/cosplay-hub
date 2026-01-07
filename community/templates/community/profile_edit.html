@@ -2,11 +2,56 @@
 {% endblock %} {% block content %}
 
     <h1>Edit Profile</h1>
+    {% load static %}
+    {% if profile.avatar %}
+        <p>Current profile picture:</p>
+        <img src="{{ profile.avatar.url }}" alt="Current profile avatar" height = "180" width = "auto">
+    {% else %}
+        <p>Current profile picture:</p>
+        <img src="{% static 'community/images/default_avatar.png' %}" alt="Default profile avatar" height = "180" width = "auto">
+    {% endif %}
 
-    <form method="post" enctype="multipart/form-data">
-        {% csrf_token %}
-        {{ form.as_p }}
-        <button type="submit">Save</button>
-    </form>
+<form method="post" enctype="multipart/form-data">
+    {% csrf_token %}
+
+    <p>
+        {{ form.avatar.label_tag }}
+        {{ form.avatar }}
+    </p>
+
+    <p>
+        {{ form.display_name.label_tag }}
+        {{ form.display_name }}
+    </p>
+
+    <p>
+        {{ form.bio.label_tag }}
+        {{ form.bio }}
+    </p>
+    <p>
+        {{ form.location.label_tag }}
+        {{ form.location }}
+    </p>
+
+
+    <p>
+        {{ form.experience_level.label_tag }}
+        {{ form.experience_level }}
+    </p>
+
+    <p>
+        {{ form.privacy.label_tag }}
+        {{ form.privacy }}
+    </p>
+
+    <p>
+        <strong>Profile Privacy</strong><br>
+        Public profiles allow anyone to follow you immediately.<br>
+        Private profiles require you to approve follow requests.
+    </p>
+
+    <button type="submit">Save</button>
+</form>
+
 
 {% endblock %}

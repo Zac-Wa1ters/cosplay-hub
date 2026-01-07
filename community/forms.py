@@ -8,6 +8,7 @@ class ProfileForm(forms.ModelForm):
             "display_name",
             "bio",
             "location",
+            "privacy",
             "experience_level",
             "avatar",
         ]

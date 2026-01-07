@@ -19,8 +19,12 @@
 {% endif %}
 
 
+{% load static %}
+
 {% if profile.avatar %}
-<img src="{{ profile.avatar.url }}" style="max-width: 200px" />
+    <img src="{{ profile.avatar.url }}" alt="Profile avatar" height = "180" width = "auto">
+{% else %}
+    <img src="{% static 'community/images/default_avatar.png' %}" alt="Default profile avatar" height = "180" width = "180">
 {% endif %}
 
 <p><strong>Experience:</strong> {{ profile.get_experience_level_display }}</p>

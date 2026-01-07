@@ -2,6 +2,8 @@ from django.shortcuts import render, get_object_or_404, redirect
 from django.http import HttpResponseForbidden
 from django.contrib.auth.models import User
 from django.contrib.auth.decorators import login_required
+from django.contrib.auth.forms import UserCreationForm
+from django.contrib.auth import login
 from .forms import *
 from .models import *
 
@@ -84,14 +86,11 @@ def profile_edit(request):
         form = ProfileForm(request.POST, request.FILES, instance=profile)
         if form.is_valid():
             form.save()
+            return redirect("profile_detail",username=request.user.username)
     else:
         form = ProfileForm(instance=profile)
 
-    return render(
-        request,
-        "community/profile_edit.html",
-        {"form": form}
-    )
+    return render(request,"community/profile_edit.html",{"form": form, "profile": profile,})
 
 @login_required
 def cosplay_create(request):
@@ -101,18 +100,12 @@ def cosplay_create(request):
             cosplay = form.save(commit=False)
             cosplay.owner = request.user
             cosplay.save()
-            return redirect(
-                "profile_detail",
-                username=request.user.username
-            )
+            return redirect("profile_detail",username=request.user.username)
     else:
         form = CosplayForm()
 
     return render(
-        request,
-        "community/cosplay_form.html",
-        {"form": form}
-    )
+        request,"community/cosplay_form.html",{"form": form})
 
 @login_required
 def cosplay_entry_create(request, cosplay_id):
@@ -131,26 +124,13 @@ def cosplay_entry_create(request, cosplay_id):
             entry.save()
 
             for image in images:
-                CosplayEntryImage.objects.create(
-                    entry=entry,
-                    image=image
-                )
+                CosplayEntryImage.objects.create(entry=entry,image=image)
 
-            return redirect(
-                "cosplay_detail",
-                cosplay_id=cosplay.id
-            )
+            return redirect("cosplay_detail",cosplay_id=cosplay.id)
     else:
         entry_form = CosplayEntryForm()
 
-    return render(
-        request,
-        "community/entry_form.html",
-        {
-            "cosplay": cosplay,
-            "form": entry_form,
-        }
-    )
+    return render(request,"community/entry_form.html",{"cosplay": cosplay,"form": entry_form,})
 
 @login_required
 def cosplay_entry_edit(request, entry_id):
@@ -255,3 +235,22 @@ def deny_follow(request, follow_id):
     follow.status = "denied"
     follow.save()
     return redirect("follow_requests")
+
+def signup(request):
+    if request.method == "POST":
+        form = UserCreationForm(request.POST)
+        if form.is_valid():
+            user = form.save()
+            login(request, user)
+            return redirect(
+                "profile_detail",
+                username=user.username
+            )
+    else:
+        form = UserCreationForm()
+
+    return render(
+        request,
+        "community/signup.html",
+        {"form": form}
+    )

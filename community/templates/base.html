@@ -19,7 +19,6 @@
           >My Profile</a
         >
         <a href="{% url 'profile_edit' %}" class="nav-link">Edit Profile</a>
-
         {% if pending_follow_requests > 0 %}
             <a href="{% url 'follow_requests' %}" class="nav-link">
                 Follow Requests ({{ pending_follow_requests }})
@@ -31,7 +30,8 @@
           <button type="submit" class="nav-link logout-button">Logout</button>
         </form>
         {% else %}
-        <a href="{% url 'login' %}" class="nav-link">Login</a>
+          <a href="{% url 'login' %}" class="nav-link">Login</a>
+          <a href="{% url 'signup' %}" class="nav-link">Sign Up</a>
         {% endif %}
       </nav>
 

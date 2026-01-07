@@ -1,0 +1,19 @@
+{% extends "base.html" %}
+
+{% block title %}Sign Up — Cosplay Hub 
+{% endblock %}
+
+{% block content %}
+<h1>Create an Account</h1>
+
+<form method="post">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <button type="submit">Sign Up</button>
+</form>
+
+<p>
+    Already have an account?
+    <a href="{% url 'login' %}">Log in</a>
+</p>
+{% endblock %}
