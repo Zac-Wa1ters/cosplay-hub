@@ -1,5 +1,5 @@
 from django import forms
-from .models import Profile, Cosplay, CosplayEntry, CosplayEntryImage
+from .models import *
 
 class ProfileForm(forms.ModelForm):
     class Meta:
@@ -35,3 +35,18 @@ class CosplayEntryImageForm(forms.ModelForm):
     class Meta:
         model = CosplayEntryImage
         fields = ["image"]
+
+class EventForm(forms.ModelForm):
+    class Meta:
+        model = Event
+        fields = ["image","title", "description", "location", "start_time", "end_time"]
+
+class EventPostForm(forms.ModelForm):
+    class Meta:
+        model = EventPost
+        fields = ["content"]
+
+class EventCommentForm(forms.ModelForm):
+    class Meta:
+        model = EventComment
+        fields = ["content"]

@@ -6,6 +6,7 @@ from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth import login
 from .forms import *
 from .models import *
+from .permissions import *
 
 
 def hub_home(request):
@@ -19,23 +20,18 @@ def profile_detail(request, username):
     follow_status = None
 
     if request.user.is_authenticated and request.user != user:
-        follow = Follow.objects.filter(
-            follower=request.user,
-            following=user,
-        ).first()
+        follow = Follow.objects.filter(follower=request.user,following=user,).first()
 
         if follow:
             follow_status = follow.status
         else:
             follow_status = "not_following"
 
-    if request.user == user:
+    if request.user == user or request.user.is_superuser:
         cosplays = user.cosplays.filter(archived=False)
     else:
-        cosplays = user.cosplays.filter(
-            archived=False,
-            visibility="public"
-        )
+        cosplays = user.cosplays.filter(archived=False,visibility="public")
+
 
     context = {
         "profile_user": user,
@@ -53,18 +49,20 @@ def cosplay_detail(request, cosplay_id):
 
 
     if cosplay.visibility == "private":
-        if request.user != cosplay.owner:
+        if request.user != cosplay.owner and not request.user.is_superuser:
             return HttpResponseForbidden()
+
 
     elif cosplay.visibility == "followers":
-        is_follower = Follow.objects.filter(
-            follower=request.user,
-            following=cosplay.owner,
-            status="approved"
-        ).exists()
+        is_follower = Follow.objects.filter(follower=request.user,following=cosplay.owner,status="approved").exists()
 
-        if request.user != cosplay.owner and not is_follower:
-            return HttpResponseForbidden()
+    if (
+        request.user != cosplay.owner
+        and not is_follower
+        and not request.user.is_superuser
+    ):
+        return HttpResponseForbidden()
+
 
     entries = cosplay.entries.prefetch_related("images").order_by("-created_at")
 
@@ -79,8 +77,17 @@ def cosplay_detail(request, cosplay_id):
 
 
 @login_required
-def profile_edit(request):
-    profile = request.user.profile
+def profile_edit(request, username=None):
+    if username:
+        user = get_object_or_404(User, username=username)
+    else:
+        user = request.user
+
+    permission = require_owner_or_admin(request, user)
+    if permission:
+        return permission
+
+    profile = user.profile
 
     if request.method == "POST":
         form = ProfileForm(request.POST, request.FILES, instance=profile)
@@ -108,11 +115,32 @@ def cosplay_create(request):
         request,"community/cosplay_form.html",{"form": form})
 
 @login_required
+def cosplay_delete(request, cosplay_id):
+    cosplay = get_object_or_404(Cosplay, id=cosplay_id)
+
+    permission = require_owner_or_admin(request, cosplay.owner)
+    if permission:
+        return permission
+
+    if request.method == "POST":
+        cosplay.delete()
+        return redirect("profile_detail",username=cosplay.owner.username)
+
+    return render(
+        request,
+        "community/cosplay_confirm_delete.html",
+        {"cosplay": cosplay}
+    )
+
+
+@login_required
 def cosplay_entry_create(request, cosplay_id):
     cosplay = get_object_or_404(Cosplay, id=cosplay_id)
 
-    if cosplay.owner != request.user:
-        return HttpResponseForbidden()
+    permission = require_owner_or_admin(request, cosplay.owner)
+    if permission:
+        return permission
+
 
     if request.method == "POST":
         entry_form = CosplayEntryForm(request.POST)
@@ -137,8 +165,10 @@ def cosplay_entry_edit(request, entry_id):
     entry = get_object_or_404(CosplayEntry, id=entry_id)
     cosplay = entry.cosplay
 
-    if request.user != cosplay.owner:
-        return HttpResponseForbidden()
+    permission = require_owner_or_admin(request, cosplay.owner)
+    if permission:
+        return permission
+
 
     if request.method == "POST":
         form = CosplayEntryForm(request.POST, instance=entry)
@@ -163,8 +193,9 @@ def cosplay_entry_delete(request, entry_id):
     entry = get_object_or_404(CosplayEntry, id=entry_id)
     cosplay = entry.cosplay
 
-    if request.user != cosplay.owner:
-        return HttpResponseForbidden()
+    permission = require_owner_or_admin(request, cosplay.owner)
+    if permission:
+        return permission
 
     if request.method == "POST":
         entry.delete()
@@ -243,7 +274,7 @@ def signup(request):
             user = form.save()
             login(request, user)
             return redirect(
-                "profile_detail",
+                "profile_edit",
                 username=user.username
             )
     else:
@@ -254,3 +285,114 @@ def signup(request):
         "community/signup.html",
         {"form": form}
     )
+
+def events_list(request):
+    events = Event.objects.filter(is_archived=False).order_by("start_time")
+    return render(request, "community/events_list.html", {"events": events})
+
+def event_detail(request, event_id):
+    event = get_object_or_404(Event, id=event_id, is_archived=False)
+    return render(request, "community/event_detail.html", {"event": event})
+
+@login_required
+def event_create(request):
+    if request.method == "POST":
+        form = EventForm(request.POST, request.FILES)
+        if form.is_valid():
+            event = form.save(commit=False)
+            event.creator = request.user
+            event.save()
+            return redirect("event_detail", event_id=event.id)
+    else:
+        form = EventForm()
+
+    return render(request, "community/event_form.html", {"form": form})
+
+@login_required
+def event_edit(request, event_id):
+    event = get_object_or_404(Event, id=event_id)
+    permission = require_owner_or_admin(request, event.creator)
+    if permission:
+        return permission
+
+    if request.method == "POST":
+        form = EventForm(request.POST, request.FILES, instance=event)
+        if form.is_valid():
+            form.save()
+            return redirect("event_detail", event_id=event.id)
+    else:
+        form = EventForm(instance=event)
+
+    return render(request, "community/event_form.html", {"form": form, "event": event})
+
+@login_required
+def event_delete(request, event_id):
+    event = get_object_or_404(Event, id=event_id)
+    permission = require_owner_or_admin(request, event.creator)
+    if permission:
+        return permission
+
+    if request.method == "POST":
+        event.is_archived = True
+        event.save()
+        return redirect("events_list")
+
+    return render(request, "community/event_confirm_delete.html", {"event": event})
+
+@login_required
+def event_post_create(request, event_id):
+    event = get_object_or_404(Event, id=event_id)
+    permission = require_owner_or_admin(request, event.creator)
+    if permission:
+        return permission
+
+    if request.method == "POST":
+        form = EventPostForm(request.POST)
+        if form.is_valid():
+            post = form.save(commit=False)
+            post.event = event
+            post.author = request.user
+            post.save()
+            return redirect("event_detail", event_id=event.id)
+
+    else:
+        form = EventPostForm()
+
+    return render(request, "community/event_post_form.html", {"form": form, "event": event})
+
+@login_required
+def event_comment_create(request, post_id):
+    post = get_object_or_404(EventPost, id=post_id)
+
+    if request.method == "POST":
+        form = EventCommentForm(request.POST)
+        if form.is_valid():
+            comment = form.save(commit=False)
+            comment.post = post
+            comment.author = request.user
+            comment.save()
+            return redirect("event_detail", event_id=post.event.id)
+
+    return HttpResponseForbidden()
+
+@login_required
+def event_post_delete(request, post_id):
+    post = get_object_or_404(EventPost, id=post_id)
+    permission = require_owner_or_admin(request, post.author)
+    if permission:
+        return permission
+
+    if request.method == "POST":
+        post.delete()
+        return redirect("event_detail", event_id=post.event.id)
+
+@login_required
+def event_comment_delete(request, comment_id):
+    comment = get_object_or_404(EventComment, id=comment_id)
+    permission = require_owner_or_admin(request, comment.author)
+    if permission:
+        return permission
+
+    if request.method == "POST":
+        comment.delete()
+        return redirect("event_detail", event_id=comment.post.event.id)

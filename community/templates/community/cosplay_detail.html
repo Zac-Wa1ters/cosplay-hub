@@ -1,6 +1,13 @@
 {% extends "base.html" %} {% block title %} {{ cosplay.title }} — Cosplay Hub
 {%endblock %} {% block content %}
 <h1>{{ cosplay.title }}</h1>
+{% if request.user.is_superuser or request.user == cosplay.owner %}
+    <form method="post" action="{% url 'cosplay_delete' cosplay.id %}">
+        {% csrf_token %}
+        <button type="submit">Delete Cosplay</button>
+    </form>
+{% endif %}
+
 <p>{{ cosplay.character_name }}</p>
 
 {% if request.user == cosplay.owner %}
@@ -17,6 +24,17 @@
   <p>{{ entry.content }}</p>
   {% endif %} {% for image in entry.images.all %}
   <img src="{{ image.image.url }}" style="max-width: 200px" />
+  {% if request.user.is_superuser or request.user == cosplay.owner %}
+    <a href="{% url 'cosplay_entry_edit' entry.id %}">
+        Edit
+    </a>
+
+    <form method="post" action="{% url 'cosplay_entry_delete' entry.id %}">
+        {% csrf_token %}
+        <button type="submit">Delete</button>
+    </form>
+{% endif %}
+
   {% endfor %} {% if request.user == cosplay.owner %}
   <p>
     <a href="{% url 'cosplay_entry_edit' entry.id %}">Edit</a> |

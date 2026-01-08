@@ -1,7 +1,20 @@
 {% extends "base.html" %} {% block title %} {{ profile.display_name }} — Profile
-{% endblock %} {% block content %}
+{% endblock title %} {% block content %}
+
+{% load static %}
+
+{% if profile.avatar %}
+    <img src="{{ profile.avatar.url }}" alt="Profile avatar" height="180" width="auto">
+{% else %}
+    <img src="{% static 'community/images/default_avatar.png' %}" alt="Default profile avatar" height="180" width="180">
+{% endif %}
 
 <h1>{{ profile.display_name }}</h1>
+{% if request.user.is_authenticated and request.user == profile_user or request.user.is_superuser %}
+    <a href="{% url 'profile_edit' profile_user.username %}">
+        Edit Profile
+    </a>
+{% endif %}
 
 {% if follow_status %}
     {% if follow_status == "not_following" %}
@@ -17,16 +30,6 @@
         <p>You are following this user</p>
     {% endif %}
 {% endif %}
-
-
-{% load static %}
-
-{% if profile.avatar %}
-    <img src="{{ profile.avatar.url }}" alt="Profile avatar" height = "180" width = "auto">
-{% else %}
-    <img src="{% static 'community/images/default_avatar.png' %}" alt="Default profile avatar" height = "180" width = "180">
-{% endif %}
-
 <p><strong>Experience:</strong> {{ profile.get_experience_level_display }}</p>
 {% if request.user == profile_user %}
 <p>
@@ -43,9 +46,16 @@
   {% for cosplay in cosplays %}
   <li>
     <a href="{% url 'cosplay_detail' cosplay.id %}"> {{ cosplay.title }} </a>
+    {% if request.user.is_superuser or request.user == cosplay.owner %}
+    <form method="post" action="{% url 'cosplay_delete' cosplay.id %}">
+        {% csrf_token %}
+        <button type="submit">Delete</button>
+    </form>
+{% endif %}
+
   </li>
   {% endfor %}
 </ul>
 {% else %}
 <p>No cosplays yet.</p>
-{% endif %} {% endblock %}
+{% endif %} {% endblock content %}
