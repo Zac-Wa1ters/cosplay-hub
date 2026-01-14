@@ -9,10 +9,10 @@
 
 <form method="post">
     {% csrf_token %}
-    <button type="submit">Yes, delete</button>
+    <button type="submit" class="button-danger">Yes, delete</button>
 </form>
 
 <p>
-    <a href="{% url 'cosplay_detail' cosplay.id %}">Cancel</a>
+    <button onclick="window.history.back()" class="button-danger">Cancel</button>
 </p>
 {% endblock %}

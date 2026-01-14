@@ -39,7 +39,12 @@ class CosplayEntryImageForm(forms.ModelForm):
 class EventForm(forms.ModelForm):
     class Meta:
         model = Event
-        fields = ["image","title", "description", "location", "start_time", "end_time"]
+        fields = ["image","title", "description", "location", "date", "time"]
+        widgets = {
+            "date": forms.DateInput(attrs={"type": "date"}),
+            "time": forms.TimeInput(attrs={"type": "time"}),
+        }
+
 
 class EventPostForm(forms.ModelForm):
     class Meta:

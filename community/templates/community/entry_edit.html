@@ -5,13 +5,39 @@
 {% block content %}
 <h1>Edit Entry</h1>
 
-<form method="post">
+{% if entry.images.all %}
+<h3>Existing Images</h3>
+
+<div class="cosplay-entry-grid">
+    {% for image in entry.images.all %}
+        <div>
+            <img src="{{ image.image.url }}" class="cosplay-entry" alt="">
+
+            <form method="post"  class="form-narrow" action="{% url 'cosplay_entry_image_delete' image.id %}">
+                {% csrf_token %}
+                <button type="submit" class="button-danger">Delete</button>
+            </form>
+        </div>
+    {% endfor %}
+</div>
+{% endif %}
+
+
+
+<form method="post" enctype="multipart/form-data" class="form-narrow">
     {% csrf_token %}
     {{ form.as_p }}
-    <button type="submit">Save Changes</button>
+
+    <p>
+        <label>Add more images</label>
+        <input type="file" name="images" multiple>
+    </p>
+
+    <button type="submit" class="button-primary">Save Changes</button>
 </form>
 
+
 <p>
-    <a href="{% url 'cosplay_detail' cosplay.id %}">Cancel</a>
+    <button onclick="window.history.back()" class="button-danger">Cancel</button>
 </p>
 {% endblock %}

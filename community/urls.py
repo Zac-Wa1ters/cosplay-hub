@@ -11,6 +11,8 @@ urlpatterns = [
     path("signup/", signup, name="signup"),
     path("users/<str:username>/", profile_detail, name="profile_detail"),
     path("cosplay/<int:cosplay_id>/", cosplay_detail, name="cosplay_detail"),
+    path("cosplay/<int:cosplay_id>/edit", cosplay_edit, name="cosplay_edit"),
+    path("cosplay/<int:cosplay_id>/delete", cosplay_delete, name="cosplay_delete"),    
     path("profile/edit/<str:username>/", profile_edit, name="profile_edit"),
     path("cosplay/create/", cosplay_create, name="cosplay_create"),
     path("cosplay/<int:cosplay_id>/entry/create/", cosplay_entry_create, name="cosplay_entry_create"),
@@ -23,6 +25,7 @@ urlpatterns = [
     path("follow/<int:follow_id>/approve/", approve_follow, name="approve_follow"),
     path("follow/<int:follow_id>/deny/", deny_follow, name="deny_follow"),
     path("cosplay/<int:cosplay_id>/delete/", cosplay_delete, name="cosplay_delete"),
+    path("entry/image/<int:image_id>/delete/", cosplay_entry_image_delete, name="cosplay_entry_image_delete"),
     path("events/", events_list, name="events_list"),
     path("events/create/", event_create, name="event_create"),
     path("events/<int:event_id>/", event_detail, name="event_detail"),
@@ -32,7 +35,9 @@ urlpatterns = [
     path("events/posts/<int:post_id>/comment/", event_comment_create, name="event_comment_create"),
     path("events/posts/<int:post_id>/delete/", event_post_delete, name="event_post_delete"),
     path("events/comments/<int:comment_id>/delete/", event_comment_delete, name="event_comment_delete"),
+    path("search/", search, name="search"),
 
+    
 ]
 if settings.DEBUG:
     urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

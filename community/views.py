@@ -4,6 +4,7 @@ from django.contrib.auth.models import User
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth import login
+from django.db.models import Q
 from .forms import *
 from .models import *
 from .permissions import *
@@ -56,12 +57,12 @@ def cosplay_detail(request, cosplay_id):
     elif cosplay.visibility == "followers":
         is_follower = Follow.objects.filter(follower=request.user,following=cosplay.owner,status="approved").exists()
 
-    if (
-        request.user != cosplay.owner
-        and not is_follower
-        and not request.user.is_superuser
-    ):
-        return HttpResponseForbidden()
+        if (
+            request.user != cosplay.owner
+            and not is_follower
+            and not request.user.is_superuser
+        ):
+            return HttpResponseForbidden()
 
 
     entries = cosplay.entries.prefetch_related("images").order_by("-created_at")
@@ -113,6 +114,30 @@ def cosplay_create(request):
 
     return render(
         request,"community/cosplay_form.html",{"form": form})
+
+@login_required
+def cosplay_edit(request, cosplay_id):
+    cosplay = get_object_or_404(Cosplay, id=cosplay_id)
+
+    permission = require_owner_or_admin(request, cosplay.owner)
+    if permission:
+        return permission
+
+    if request.method == "POST":
+        form = CosplayForm(request.POST, instance=cosplay)
+        if form.is_valid():
+            form.save()
+
+
+            return redirect("cosplay_detail", cosplay_id=cosplay.id)
+    else:
+        form = CosplayForm(instance=cosplay)
+
+    return render(
+        request,
+        "community/cosplay_edit.html",
+        {"form": form,"cosplay": cosplay}
+    )
 
 @login_required
 def cosplay_delete(request, cosplay_id):
@@ -168,12 +193,17 @@ def cosplay_entry_edit(request, entry_id):
     permission = require_owner_or_admin(request, cosplay.owner)
     if permission:
         return permission
-
-
+    
     if request.method == "POST":
         form = CosplayEntryForm(request.POST, instance=entry)
+        images = request.FILES.getlist("images")
         if form.is_valid():
             form.save()
+
+            for image in images:
+                CosplayEntryImage.objects.create(entry=entry, image=image)
+
+
             return redirect("cosplay_detail", cosplay_id=cosplay.id)
     else:
         form = CosplayEntryForm(instance=entry)
@@ -181,11 +211,7 @@ def cosplay_entry_edit(request, entry_id):
     return render(
         request,
         "community/entry_edit.html",
-        {
-            "form": form,
-            "cosplay": cosplay,
-            "entry": entry,
-        }
+        {"form": form, "entry": entry, "cosplay": cosplay}
     )
 
 @login_required
@@ -209,6 +235,23 @@ def cosplay_entry_delete(request, entry_id):
             "cosplay": cosplay,
         }
     )
+
+@login_required
+def cosplay_entry_image_delete(request, image_id):
+    image = get_object_or_404(CosplayEntryImage, id=image_id)
+    entry = image.entry
+    cosplay = entry.cosplay
+
+    permission = require_owner_or_admin(request, cosplay.owner)
+    if permission:
+        return permission
+
+    if request.method == "POST":
+        image.delete()
+        return redirect("cosplay_detail", cosplay_id=cosplay.id)
+
+    return HttpResponseForbidden()
+
 
 @login_required
 def follow_user(request, username):
@@ -287,7 +330,7 @@ def signup(request):
     )
 
 def events_list(request):
-    events = Event.objects.filter(is_archived=False).order_by("start_time")
+    events = Event.objects.filter(is_archived=False).order_by("date")
     return render(request, "community/events_list.html", {"events": events})
 
 def event_detail(request, event_id):
@@ -337,7 +380,7 @@ def event_delete(request, event_id):
         event.save()
         return redirect("events_list")
 
-    return render(request, "community/event_confirm_delete.html", {"event": event})
+    return render(request, "community/event_delete.html", {"event": event})
 
 @login_required
 def event_post_create(request, event_id):
@@ -396,3 +439,48 @@ def event_comment_delete(request, comment_id):
     if request.method == "POST":
         comment.delete()
         return redirect("event_detail", event_id=comment.post.event.id)
+
+
+
+def search(request):
+    query = request.GET.get("q", "").strip()
+
+    profiles = User.objects.none()
+    cosplays = Cosplay.objects.none()
+    events = Event.objects.none()
+
+    if query:
+        profiles = User.objects.filter(
+            Q(username__icontains=query) |
+            Q(profile__display_name__icontains=query) |
+            Q(profile__bio__icontains=query),
+            is_active=True
+        )
+
+        cosplays = Cosplay.objects.filter(
+            Q(title__icontains=query) |
+            Q(character_name__icontains=query) |
+            Q(franchise__icontains=query) |
+            Q(description__icontains=query),
+            archived=False
+        )
+
+        events = Event.objects.filter(
+            Q(title__icontains=query) |
+            Q(description__icontains=query) |
+            Q(location__icontains=query),
+            is_archived=False
+        )
+
+        if not request.user.is_superuser:
+            profiles = profiles.filter(profile__privacy="public")
+            cosplays = cosplays.filter(visibility="public")
+
+    context = {
+        "query": query,
+        "profiles": profiles,
+        "cosplays": cosplays,
+        "events": events,
+    }
+
+    return render(request, "community/search_results.html", context)

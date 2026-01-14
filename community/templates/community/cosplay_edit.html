@@ -1,0 +1,17 @@
+{% extends "base.html" %}
+
+{% block title %}Edit Cosplay — {{ cosplay.title }}{% endblock %}
+
+{% block content %}
+<h1>Edit Cosplay</h1>
+
+<form method="post" class="form-narrow">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <button type="submit" class="button-primary">Save Changes</button>
+    
+</form>
+<p>
+<button onclick="window.history.back()" class="button-danger">Cancel</button>
+</p>
+{% endblock %}

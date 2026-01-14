@@ -2,60 +2,76 @@
 {% endblock title %} {% block content %}
 
 {% load static %}
+<div class="card">
+<div class="profile-layout">
+    <section class="profile-main">
+        {% if profile.avatar %}
+            <img src="{{ profile.avatar.url }}" alt="Profile avatar" class="avatar">
+        {% else %}
+            <img src="{% static 'community/images/default_avatar.png' %}" alt="Default profile avatar" class="avatar">
+        {% endif %}
 
-{% if profile.avatar %}
-    <img src="{{ profile.avatar.url }}" alt="Profile avatar" height="180" width="auto">
-{% else %}
-    <img src="{% static 'community/images/default_avatar.png' %}" alt="Default profile avatar" height="180" width="180">
-{% endif %}
+        <h1>{{ profile.display_name }}</h1>
+        {% if request.user.is_authenticated and request.user == profile_user or request.user.is_superuser %}
+            <a href="{% url 'profile_edit' profile_user.username %}">
+                <button class="button-primary">
+                Edit Profile
+                </button>
+            </a>
+        {% endif %}
 
-<h1>{{ profile.display_name }}</h1>
-{% if request.user.is_authenticated and request.user == profile_user or request.user.is_superuser %}
-    <a href="{% url 'profile_edit' profile_user.username %}">
-        Edit Profile
-    </a>
-{% endif %}
+        {% if follow_status %}
+            {% if follow_status == "not_following" %}
+                <form method="post" action="{% url 'follow_user' profile_user.username %}">
+                    {% csrf_token %}
+                    <button type="submit">Follow</button>
+                </form>
 
-{% if follow_status %}
-    {% if follow_status == "not_following" %}
-        <form method="post" action="{% url 'follow_user' profile_user.username %}">
-            {% csrf_token %}
-            <button type="submit">Follow</button>
-        </form>
+            {% elif follow_status == "pending" %}
+                <p>Follow request pending</p>
 
-    {% elif follow_status == "pending" %}
-        <p>Follow request pending</p>
+            {% elif follow_status == "approved" %}
+                <p>You are following this user</p>
+            {% endif %}
+        {% endif %}
+        <p><strong>Experience:</strong> {{ profile.get_experience_level_display }}</p>
 
-    {% elif follow_status == "approved" %}
-        <p>You are following this user</p>
-    {% endif %}
-{% endif %}
-<p><strong>Experience:</strong> {{ profile.get_experience_level_display }}</p>
-{% if request.user == profile_user %}
-<p>
-  <a href="{% url 'cosplay_create' %}" class="create-cosplay-link">
-    + Create Cosplay
-  </a>
-</p>
-{% endif %}
+        {% if profile.bio %}
+        <p><strong>Bio:</strong> {{ profile.bio }}</p>
+        {% endif %}
+        {% if profile.location %}
+        <p><strong>Location:</strong> {{ profile.location }}</p>
+        {% endif %}
 
-<h2>Cosplays</h2>
 
-{% if cosplays %}
-<ul>
-  {% for cosplay in cosplays %}
-  <li>
-    <a href="{% url 'cosplay_detail' cosplay.id %}"> {{ cosplay.title }} </a>
-    {% if request.user.is_superuser or request.user == cosplay.owner %}
-    <form method="post" action="{% url 'cosplay_delete' cosplay.id %}">
-        {% csrf_token %}
-        <button type="submit">Delete</button>
-    </form>
-{% endif %}
 
-  </li>
-  {% endfor %}
-</ul>
-{% else %}
-<p>No cosplays yet.</p>
-{% endif %} {% endblock content %}
+        
+        {% if request.user == profile_user %}
+        <p>
+        <a href="{% url 'cosplay_create' %}" class="create-cosplay-link">
+            <button class="button-primary">
+            + Create Cosplay
+            </button>
+        </a>
+        </p>
+        {% endif %}
+    </section>
+
+    <section class = "profile-cosplays">
+        <h2>Cosplays</h2>
+
+        {% if cosplays %}
+            <ul>
+                {% for cosplay in cosplays %}
+            <li>
+                <a href="{% url 'cosplay_detail' cosplay.id %}"> {{ cosplay.title }} </a>
+            </li>
+            {% endfor %}
+            </ul>
+        {% else %}
+            <p>No cosplays yet.</p>
+
+        {% endif %} 
+        </section>
+        </div></div>
+        {% endblock content %}

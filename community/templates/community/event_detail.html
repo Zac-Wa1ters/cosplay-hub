@@ -1,11 +1,12 @@
 {% extends "base.html" %}
 {% block content %}
+{% load static %}
 <h1>{{ event.title }}</h1>
 
 {% load static %}
 
 {% if event.image %}
-    <img src="{{ event.image.url }}" alt="Event image" height = "180" width = "auto">
+    <img src="{{ event.image.url }}" alt="Event image" class="event-image">
 {% else %}
     <img src="{% static 'community/images/no-image.jpg' %}" alt="Default event image" height = "180" width = "auto">
 {% endif %}
@@ -13,12 +14,17 @@
 
 <p>{{ event.description }}</p>
 <p>{{ event.location }}</p>
+{% if event.date %}
+    <p>Date: {{ event.date }}
+{% endif %}
+
+{% if event.time %}
+    <p>Time: {{ event.time }}
+{% endif %}
 
 {% if request.user.is_superuser or request.user == event.creator %}
-    <a href="{% url 'event_edit' event.id %}">Edit</a>
-    <form method="post" action="{% url 'event_delete' event.id %}">
-        {% csrf_token %}
-        <button type="submit">Delete</button>
-    </form>
+    <p><a href="{% url 'event_edit' event.id %}"><button class="button-primary">Edit</button></a></p>
+
+       <a href="{% url 'event_delete' event.id %}"> <button type="submit" class="button-danger">Delete</button></a>
 {% endif %}
 {% endblock %}

@@ -1,48 +1,75 @@
-{% extends "base.html" %} {% block title %} {{ cosplay.title }} — Cosplay Hub
-{%endblock %} {% block content %}
+{% extends "base.html" %}
+{% block title %}{{ cosplay.title }} — Cosplay Hub{% endblock %}
+
+{% block content %}
 <h1>{{ cosplay.title }}</h1>
-{% if request.user.is_superuser or request.user == cosplay.owner %}
-    <form method="post" action="{% url 'cosplay_delete' cosplay.id %}">
-        {% csrf_token %}
-        <button type="submit">Delete Cosplay</button>
-    </form>
+
+
+
+<h2>Character: {{ cosplay.character_name }}</h2>
+
+{% if cosplay.franchise %}
+<h2>
+  Franchise: {{ cosplay.franchise }}
+</h2>
 {% endif %}
 
-<p>{{ cosplay.character_name }}</p>
-
-{% if request.user == cosplay.owner %}
+{% if cosplay.description %}
 <p>
-  <a href="{% url 'cosplay_entry_create' cosplay.id %}"> Add Entry </a>
+  {{ cosplay.description }}
 </p>
 {% endif %}
 
-<h2>Entries</h2>
 
-{% if entries %} {% for entry in entries %}
-<div style="margin-bottom: 20px">
-  {% if entry.content %}
-  <p>{{ entry.content }}</p>
-  {% endif %} {% for image in entry.images.all %}
-  <img src="{{ image.image.url }}" style="max-width: 200px" />
-  {% if request.user.is_superuser or request.user == cosplay.owner %}
-    <a href="{% url 'cosplay_entry_edit' entry.id %}">
-        Edit
-    </a>
+<h3>Entries</h3>
 
-    <form method="post" action="{% url 'cosplay_entry_delete' entry.id %}">
-        {% csrf_token %}
-        <button type="submit">Delete</button>
-    </form>
+{% if entries %}
+    {% for entry in entries %}
+        <div class="card">
+
+            {% if entry.content %}
+                <p>{{ entry.content }}</p>
+            {% endif %}
+
+{% if entry.images.all %}
+    <div class="cosplay-entry-grid">
+        {% for image in entry.images.all %}
+            <div class="entry-image">
+                <img src="{{ image.image.url }}" class="cosplay-entry" alt="">
+
+            </div>
+        {% endfor %}
+    </div>
 {% endif %}
 
-  {% endfor %} {% if request.user == cosplay.owner %}
-  <p>
-    <a href="{% url 'cosplay_entry_edit' entry.id %}">Edit</a> |
-    <a href="{% url 'cosplay_entry_delete' entry.id %}">Delete</a>
-  </p>
-  {% endif %}
-  <small> {{ entry.created_at|date:"M d, Y · P" }} </small>
-</div>
-{% endfor %} {% else %}
-<p>No entries yet.</p>
-{% endif %} {% endblock %}
+
+
+            {% if request.user.is_superuser or request.user == cosplay.owner %}
+                <p>
+                    <a href="{% url 'cosplay_entry_edit' entry.id %}"><button class="button-primary">Edit Entry<button></a> |
+                    <a href="{% url 'cosplay_entry_delete' entry.id %}"><button class="button-danger">Delete Entry<button></a>
+
+
+                </p>
+            {% endif %}
+
+            <small class="muted">
+                {{ entry.created_at|date:"M d, Y · P" }}
+            </small>
+
+        </div>
+    {% endfor %}
+{% else %}
+    <p>No entries yet.</p>
+
+{% endif %}
+{% if request.user == cosplay.owner %}
+<p>
+    <a href="{% url 'cosplay_entry_create' cosplay.id %}"><button class="button-secondary">Add Entry</button></a> | 
+    <a href="{% url 'cosplay_edit' cosplay.id %}"><button class="button-primary">Edit Cosplay</button></a> | 
+    <a href="{% url 'cosplay_delete' cosplay.id %}"><button class="button-danger">Delete Cosplay</button></a>
+
+</p>
+
+{% endif %}
+{% endblock %}

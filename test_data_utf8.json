@@ -1,10 +1,514 @@
 [
 {
+  "model": "auth.permission",
+  "pk": 1,
+  "fields": {
+    "name": "Can add log entry",
+    "content_type": 1,
+    "codename": "add_logentry"
+  }
+},
+{
+  "model": "auth.permission",
+  "pk": 2,
+  "fields": {
+    "name": "Can change log entry",
+    "content_type": 1,
+    "codename": "change_logentry"
+  }
+},
+{
+  "model": "auth.permission",
+  "pk": 3,
+  "fields": {
+    "name": "Can delete log entry",
+    "content_type": 1,
+    "codename": "delete_logentry"
+  }
+},
+{
+  "model": "auth.permission",
+  "pk": 4,
+  "fields": {
+    "name": "Can view log entry",
+    "content_type": 1,
+    "codename": "view_logentry"
+  }
+},
+{
+  "model": "auth.permission",
+  "pk": 5,
+  "fields": {
+    "name": "Can add permission",
+    "content_type": 3,
+    "codename": "add_permission"
+  }
+},
+{
+  "model": "auth.permission",
+  "pk": 6,
+  "fields": {
+    "name": "Can change permission",
+    "content_type": 3,
+    "codename": "change_permission"
+  }
+},
+{
+  "model": "auth.permission",
+  "pk": 7,
+  "fields": {
+    "name": "Can delete permission",
+    "content_type": 3,
+    "codename": "delete_permission"
+  }
+},
+{
+  "model": "auth.permission",
+  "pk": 8,
+  "fields": {
+    "name": "Can view permission",
+    "content_type": 3,
+    "codename": "view_permission"
+  }
+},
+{
+  "model": "auth.permission",
+  "pk": 9,
+  "fields": {
+    "name": "Can add group",
+    "content_type": 2,
+    "codename": "add_group"
+  }
+},
+{
+  "model": "auth.permission",
+  "pk": 10,
+  "fields": {
+    "name": "Can change group",
+    "content_type": 2,
+    "codename": "change_group"
+  }
+},
+{
+  "model": "auth.permission",
+  "pk": 11,
+  "fields": {
+    "name": "Can delete group",
+    "content_type": 2,
+    "codename": "delete_group"
+  }
+},
+{
+  "model": "auth.permission",
+  "pk": 12,
+  "fields": {
+    "name": "Can view group",
+    "content_type": 2,
+    "codename": "view_group"
+  }
+},
+{
+  "model": "auth.permission",
+  "pk": 13,
+  "fields": {
+    "name": "Can add user",
+    "content_type": 4,
+    "codename": "add_user"
+  }
+},
+{
+  "model": "auth.permission",
+  "pk": 14,
+  "fields": {
+    "name": "Can change user",
+    "content_type": 4,
+    "codename": "change_user"
+  }
+},
+{
+  "model": "auth.permission",
+  "pk": 15,
+  "fields": {
+    "name": "Can delete user",
+    "content_type": 4,
+    "codename": "delete_user"
+  }
+},
+{
+  "model": "auth.permission",
+  "pk": 16,
+  "fields": {
+    "name": "Can view user",
+    "content_type": 4,
+    "codename": "view_user"
+  }
+},
+{
+  "model": "auth.permission",
+  "pk": 17,
+  "fields": {
+    "name": "Can add content type",
+    "content_type": 5,
+    "codename": "add_contenttype"
+  }
+},
+{
+  "model": "auth.permission",
+  "pk": 18,
+  "fields": {
+    "name": "Can change content type",
+    "content_type": 5,
+    "codename": "change_contenttype"
+  }
+},
+{
+  "model": "auth.permission",
+  "pk": 19,
+  "fields": {
+    "name": "Can delete content type",
+    "content_type": 5,
+    "codename": "delete_contenttype"
+  }
+},
+{
+  "model": "auth.permission",
+  "pk": 20,
+  "fields": {
+    "name": "Can view content type",
+    "content_type": 5,
+    "codename": "view_contenttype"
+  }
+},
+{
+  "model": "auth.permission",
+  "pk": 21,
+  "fields": {
+    "name": "Can add session",
+    "content_type": 6,
+    "codename": "add_session"
+  }
+},
+{
+  "model": "auth.permission",
+  "pk": 22,
+  "fields": {
+    "name": "Can change session",
+    "content_type": 6,
+    "codename": "change_session"
+  }
+},
+{
+  "model": "auth.permission",
+  "pk": 23,
+  "fields": {
+    "name": "Can delete session",
+    "content_type": 6,
+    "codename": "delete_session"
+  }
+},
+{
+  "model": "auth.permission",
+  "pk": 24,
+  "fields": {
+    "name": "Can view session",
+    "content_type": 6,
+    "codename": "view_session"
+  }
+},
+{
+  "model": "auth.permission",
+  "pk": 25,
+  "fields": {
+    "name": "Can add profile",
+    "content_type": 11,
+    "codename": "add_profile"
+  }
+},
+{
+  "model": "auth.permission",
+  "pk": 26,
+  "fields": {
+    "name": "Can change profile",
+    "content_type": 11,
+    "codename": "change_profile"
+  }
+},
+{
+  "model": "auth.permission",
+  "pk": 27,
+  "fields": {
+    "name": "Can delete profile",
+    "content_type": 11,
+    "codename": "delete_profile"
+  }
+},
+{
+  "model": "auth.permission",
+  "pk": 28,
+  "fields": {
+    "name": "Can view profile",
+    "content_type": 11,
+    "codename": "view_profile"
+  }
+},
+{
+  "model": "auth.permission",
+  "pk": 29,
+  "fields": {
+    "name": "Can add cosplay",
+    "content_type": 7,
+    "codename": "add_cosplay"
+  }
+},
+{
+  "model": "auth.permission",
+  "pk": 30,
+  "fields": {
+    "name": "Can change cosplay",
+    "content_type": 7,
+    "codename": "change_cosplay"
+  }
+},
+{
+  "model": "auth.permission",
+  "pk": 31,
+  "fields": {
+    "name": "Can delete cosplay",
+    "content_type": 7,
+    "codename": "delete_cosplay"
+  }
+},
+{
+  "model": "auth.permission",
+  "pk": 32,
+  "fields": {
+    "name": "Can view cosplay",
+    "content_type": 7,
+    "codename": "view_cosplay"
+  }
+},
+{
+  "model": "auth.permission",
+  "pk": 33,
+  "fields": {
+    "name": "Can add cosplay entry",
+    "content_type": 8,
+    "codename": "add_cosplayentry"
+  }
+},
+{
+  "model": "auth.permission",
+  "pk": 34,
+  "fields": {
+    "name": "Can change cosplay entry",
+    "content_type": 8,
+    "codename": "change_cosplayentry"
+  }
+},
+{
+  "model": "auth.permission",
+  "pk": 35,
+  "fields": {
+    "name": "Can delete cosplay entry",
+    "content_type": 8,
+    "codename": "delete_cosplayentry"
+  }
+},
+{
+  "model": "auth.permission",
+  "pk": 36,
+  "fields": {
+    "name": "Can view cosplay entry",
+    "content_type": 8,
+    "codename": "view_cosplayentry"
+  }
+},
+{
+  "model": "auth.permission",
+  "pk": 37,
+  "fields": {
+    "name": "Can add cosplay entry image",
+    "content_type": 9,
+    "codename": "add_cosplayentryimage"
+  }
+},
+{
+  "model": "auth.permission",
+  "pk": 38,
+  "fields": {
+    "name": "Can change cosplay entry image",
+    "content_type": 9,
+    "codename": "change_cosplayentryimage"
+  }
+},
+{
+  "model": "auth.permission",
+  "pk": 39,
+  "fields": {
+    "name": "Can delete cosplay entry image",
+    "content_type": 9,
+    "codename": "delete_cosplayentryimage"
+  }
+},
+{
+  "model": "auth.permission",
+  "pk": 40,
+  "fields": {
+    "name": "Can view cosplay entry image",
+    "content_type": 9,
+    "codename": "view_cosplayentryimage"
+  }
+},
+{
+  "model": "auth.permission",
+  "pk": 41,
+  "fields": {
+    "name": "Can add follow",
+    "content_type": 10,
+    "codename": "add_follow"
+  }
+},
+{
+  "model": "auth.permission",
+  "pk": 42,
+  "fields": {
+    "name": "Can change follow",
+    "content_type": 10,
+    "codename": "change_follow"
+  }
+},
+{
+  "model": "auth.permission",
+  "pk": 43,
+  "fields": {
+    "name": "Can delete follow",
+    "content_type": 10,
+    "codename": "delete_follow"
+  }
+},
+{
+  "model": "auth.permission",
+  "pk": 44,
+  "fields": {
+    "name": "Can view follow",
+    "content_type": 10,
+    "codename": "view_follow"
+  }
+},
+{
+  "model": "auth.permission",
+  "pk": 45,
+  "fields": {
+    "name": "Can add event",
+    "content_type": 12,
+    "codename": "add_event"
+  }
+},
+{
+  "model": "auth.permission",
+  "pk": 46,
+  "fields": {
+    "name": "Can change event",
+    "content_type": 12,
+    "codename": "change_event"
+  }
+},
+{
+  "model": "auth.permission",
+  "pk": 47,
+  "fields": {
+    "name": "Can delete event",
+    "content_type": 12,
+    "codename": "delete_event"
+  }
+},
+{
+  "model": "auth.permission",
+  "pk": 48,
+  "fields": {
+    "name": "Can view event",
+    "content_type": 12,
+    "codename": "view_event"
+  }
+},
+{
+  "model": "auth.permission",
+  "pk": 49,
+  "fields": {
+    "name": "Can add event comment",
+    "content_type": 13,
+    "codename": "add_eventcomment"
+  }
+},
+{
+  "model": "auth.permission",
+  "pk": 50,
+  "fields": {
+    "name": "Can change event comment",
+    "content_type": 13,
+    "codename": "change_eventcomment"
+  }
+},
+{
+  "model": "auth.permission",
+  "pk": 51,
+  "fields": {
+    "name": "Can delete event comment",
+    "content_type": 13,
+    "codename": "delete_eventcomment"
+  }
+},
+{
+  "model": "auth.permission",
+  "pk": 52,
+  "fields": {
+    "name": "Can view event comment",
+    "content_type": 13,
+    "codename": "view_eventcomment"
+  }
+},
+{
+  "model": "auth.permission",
+  "pk": 53,
+  "fields": {
+    "name": "Can add event post",
+    "content_type": 14,
+    "codename": "add_eventpost"
+  }
+},
+{
+  "model": "auth.permission",
+  "pk": 54,
+  "fields": {
+    "name": "Can change event post",
+    "content_type": 14,
+    "codename": "change_eventpost"
+  }
+},
+{
+  "model": "auth.permission",
+  "pk": 55,
+  "fields": {
+    "name": "Can delete event post",
+    "content_type": 14,
+    "codename": "delete_eventpost"
+  }
+},
+{
+  "model": "auth.permission",
+  "pk": 56,
+  "fields": {
+    "name": "Can view event post",
+    "content_type": 14,
+    "codename": "view_eventpost"
+  }
+},
+{
   "model": "auth.user",
   "pk": 1,
   "fields": {
     "password": "pbkdf2_sha256$1200000$Uqht6rEL3gbhozrxssQTM1$KrL4IJ7Ej/0sQysXrm+j10Gdb7XdeZFqw9KmSkkK9t0=",
-    "last_login": "2026-01-03T04:47:26.216Z",
+    "last_login": "2026-01-07T22:11:51.496Z",
     "is_superuser": true,
     "username": "Zac",
     "first_name": "",
@@ -22,7 +526,7 @@
   "pk": 2,
   "fields": {
     "password": "pbkdf2_sha256$1200000$DecZfrQyBqmfKuHjDfKbOH$63DHgxpa8hPOAfDpvzuETSuyQDFB72jhd4/0TrmdNNY=",
-    "last_login": "2026-01-03T04:58:16.187Z",
+    "last_login": "2026-01-07T22:12:21.112Z",
     "is_superuser": false,
     "username": "Caz",
     "first_name": "",
@@ -40,7 +544,7 @@
   "pk": 3,
   "fields": {
     "password": "pbkdf2_sha256$1200000$35evfGjSdSYnOvyZsbxDYQ$PEdkb8i6JpB4+I3wnC69zz9s13DAQ9vD5e6u2oBnJms=",
-    "last_login": "2026-01-03T04:11:31.687Z",
+    "last_login": "2026-01-07T21:53:09.280Z",
     "is_superuser": false,
     "username": "testprofile",
     "first_name": "Test",
@@ -54,6 +558,60 @@
   }
 },
 {
+  "model": "auth.user",
+  "pk": 4,
+  "fields": {
+    "password": "pbkdf2_sha256$1200000$tgJVieCIUsjmCcqf8Mpg7C$NwSKf04Bzc8/lftNFkAC8M8SEE3XYkHWIfb+gtrHwZ0=",
+    "last_login": "2026-01-07T04:48:05.374Z",
+    "is_superuser": false,
+    "username": "zachary",
+    "first_name": "",
+    "last_name": "",
+    "email": "",
+    "is_staff": false,
+    "is_active": true,
+    "date_joined": "2026-01-07T04:48:05.013Z",
+    "groups": [],
+    "user_permissions": []
+  }
+},
+{
+  "model": "auth.user",
+  "pk": 5,
+  "fields": {
+    "password": "pbkdf2_sha256$1200000$oBlkrCQEXQMGMMI4XuGdhU$vt2Rmjlu+aMC63CDldlCm7xzbEoCUXSWhC3VBXqqoz0=",
+    "last_login": "2026-01-07T22:24:39.323Z",
+    "is_superuser": false,
+    "username": "Cazo",
+    "first_name": "",
+    "last_name": "",
+    "email": "",
+    "is_staff": false,
+    "is_active": true,
+    "date_joined": "2026-01-07T22:24:38.764Z",
+    "groups": [],
+    "user_permissions": []
+  }
+},
+{
+  "model": "auth.user",
+  "pk": 6,
+  "fields": {
+    "password": "pbkdf2_sha256$1200000$eMDwhlIy1CSa9XNxgGgfGQ$RwLg686fJV5ALEZ4iLI2LMCgywkwNxGiWE1ON9fji+U=",
+    "last_login": "2026-01-07T22:28:02.528Z",
+    "is_superuser": false,
+    "username": "CazOdinson",
+    "first_name": "",
+    "last_name": "",
+    "email": "",
+    "is_staff": false,
+    "is_active": true,
+    "date_joined": "2026-01-07T22:28:02.014Z",
+    "groups": [],
+    "user_permissions": []
+  }
+},
+{
   "model": "community.profile",
   "pk": 1,
   "fields": {
@@ -62,7 +620,8 @@
     "bio": "Website creator",
     "location": "Mississippi",
     "experience_level": "casual",
-    "avatar": "avatars/494735592_10229216304974078_1203465083677106022_n.jpg"
+    "privacy": "private",
+    "avatar": "avatars/obi1.jpg"
   }
 },
 {
@@ -74,6 +633,7 @@
     "bio": "",
     "location": "",
     "experience_level": "casual",
+    "privacy": "public",
     "avatar": ""
   }
 },
@@ -86,7 +646,47 @@
     "bio": "",
     "location": "",
     "experience_level": "casual",
+    "privacy": "private",
+    "avatar": "avatars/thor.jpg"
+  }
+},
+{
+  "model": "community.profile",
+  "pk": 4,
+  "fields": {
+    "user": 4,
+    "display_name": "zachary",
+    "bio": "",
+    "location": "",
+    "experience_level": "casual",
+    "privacy": "public",
     "avatar": ""
+  }
+},
+{
+  "model": "community.profile",
+  "pk": 5,
+  "fields": {
+    "user": 5,
+    "display_name": "Cazo",
+    "bio": "",
+    "location": "",
+    "experience_level": "casual",
+    "privacy": "public",
+    "avatar": ""
+  }
+},
+{
+  "model": "community.profile",
+  "pk": 6,
+  "fields": {
+    "user": 6,
+    "display_name": "CazOdinson",
+    "bio": "Just cosplay for fun and to meet people!",
+    "location": "Oxford, MS",
+    "experience_level": "casual",
+    "privacy": "public",
+    "avatar": "avatars/thor_2.jpg"
   }
 },
 {
@@ -216,6 +816,91 @@
     "entry": 7,
     "image": "cosplay_entries/obi_ThSRJBc.jpg",
     "uploaded_at": "2026-01-03T04:56:36.595Z"
+  }
+},
+{
+  "model": "community.follow",
+  "pk": 1,
+  "fields": {
+    "follower": 1,
+    "following": 3,
+    "status": "approved",
+    "created_at": "2026-01-07T04:30:06.531Z"
+  }
+},
+{
+  "model": "community.event",
+  "pk": 1,
+  "fields": {
+    "title": "Momocon Critical Role Meetup",
+    "description": "Meet fellow fans of the hit DND show Critical Role!",
+    "location": "TBD",
+    "start_time": null,
+    "end_time": null,
+    "creator": 1,
+    "is_archived": true,
+    "created_at": "2026-01-07T21:40:14.221Z",
+    "image": ""
+  }
+},
+{
+  "model": "community.event",
+  "pk": 2,
+  "fields": {
+    "title": "Momocon Critical Role Meetup",
+    "description": "Momo CritRole",
+    "location": "GWCC",
+    "start_time": null,
+    "end_time": null,
+    "creator": 1,
+    "is_archived": true,
+    "created_at": "2026-01-07T21:46:19.118Z",
+    "image": ""
+  }
+},
+{
+  "model": "community.event",
+  "pk": 3,
+  "fields": {
+    "title": "Momocon Critical Role Meetup",
+    "description": "Momo CritRole",
+    "location": "Atlanta",
+    "start_time": null,
+    "end_time": null,
+    "creator": 3,
+    "is_archived": true,
+    "created_at": "2026-01-07T21:53:40.117Z",
+    "image": "event_images/critrole.jpg"
+  }
+},
+{
+  "model": "community.event",
+  "pk": 4,
+  "fields": {
+    "title": "Momocon Critical Role Meetup",
+    "description": "Momocon Critical Role Meetup",
+    "location": "",
+    "start_time": null,
+    "end_time": null,
+    "creator": 3,
+    "is_archived": true,
+    "created_at": "2026-01-07T22:06:22.893Z",
+    "image": "event_images/critrole_l66FVoB.jpg"
+  }
+},
+{
+  "model": "community.event",
+  "pk": 5,
+  "fields": {
+    "title": "Momocon Critical Role Meetup",
+    "description": "Momo CritRole",
+    "location": "",
+    "start_time": null,
+    "end_time": null,
+    "creator": 3,
+    "is_archived": false,
+    "created_at": "2026-01-07T22:11:36.810Z",
+    "image": "event_images/critrole_LW7ff1W.jpg"
   }
 }
 ]

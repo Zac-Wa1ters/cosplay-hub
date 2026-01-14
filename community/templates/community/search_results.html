@@ -1,0 +1,49 @@
+{% extends "base.html" %}
+{% block title %}Search{% endblock %}
+
+{% block content %}
+<h1>Search Results</h1>
+
+{% if query %}
+<p class="muted">Results for “{{ query }}”</p>
+{% endif %}
+
+<h2>Profiles</h2>
+{% if profiles %}
+    {% for user in profiles %}
+        <div class="card">
+            <a href="{% url 'profile_detail' user.username %}">
+                {{ user.username }}
+            </a>
+        </div>
+    {% endfor %}
+{% else %}
+    <p class="muted">No profiles found.</p>
+{% endif %}
+
+<h2>Cosplays</h2>
+{% if cosplays %}
+    {% for cosplay in cosplays %}
+        <div class="card">
+            <a href="{% url 'cosplay_detail' cosplay.id %}">
+                {{ cosplay.title }}
+            </a>
+        </div>
+    {% endfor %}
+{% else %}
+    <p class="muted">No cosplays found.</p>
+{% endif %}
+
+<h2>Events</h2>
+{% if events %}
+    {% for event in events %}
+        <div class="card">
+            <a href="{% url 'event_detail' event.id %}">
+                {{ event.title }}
+            </a>
+        </div>
+    {% endfor %}
+{% else %}
+    <p class="muted">No events found.</p>
+{% endif %}
+{% endblock %}

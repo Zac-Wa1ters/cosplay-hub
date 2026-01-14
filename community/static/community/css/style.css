@@ -1,6 +1,11 @@
 /* =========================
    THEME VARIABLES
    ========================= */
+html {
+    font-size: 18px;
+}
+
+
 
 :root {
     --bg: #0b0f1a;
@@ -27,7 +32,8 @@
 }
 
 body {
-    margin: 0;
+    margin: 20px;
+    align-content: center;
     font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
     background:
         radial-gradient(1200px 600px at 10% -10%, #1a1f3a 0%, transparent 60%),
@@ -37,6 +43,13 @@ body {
     line-height: 1.6;
 }
 
+
+.profile-layout {
+    display: grid;
+    grid-template-columns: 1fr 2fr;
+    gap: 2rem;
+    align-items: start;
+}
 /* =========================
    LAYOUT
    ========================= */
@@ -47,6 +60,11 @@ body {
     padding: 2rem 1.5rem;
 }
 
+.page{
+    display: flex;
+    justify-content: center;
+}
+
 /* =========================
    NAVIGATION (TECH BAR)
    ========================= */
@@ -54,14 +72,22 @@ body {
 .main-nav {
     display: flex;
     align-items: center;
-    gap: 1.25rem;
-    padding: 1rem 1.5rem;
+    gap: 2rem;
+    padding-left: 10px;
+    margin: -10px;
     background: rgba(10, 14, 30, 0.85);
     backdrop-filter: blur(14px);
     border-bottom: 1px solid var(--border);
     position: sticky;
     top: 0;
     z-index: 10;
+}
+
+.main-nav h1{
+    margin-top: 10px;
+    justify-content: left;
+    align-items: center;
+    display: flex;
 }
 
 .main-nav a,
@@ -74,6 +100,7 @@ body {
     text-decoration: none;
     position: relative;
 }
+
 
 .main-nav a::after,
 .main-nav button::after {
@@ -147,6 +174,7 @@ h3 {
 
 button {
     font: inherit;
+    text-shadow: 1px 1px #000000d3;
     padding: 0.55rem 1.1rem;
     border-radius: var(--radius);
     border: none;
@@ -156,7 +184,8 @@ button {
 }
 
 .button-primary {
-    background: linear-gradient(135deg, #6366f1, var(--accent));
+    padding: 7px;
+    background: linear-gradient(135deg, #bdbeed, var(--accent));
     color: white;
     box-shadow: 0 0 0 transparent;
 }
@@ -168,19 +197,32 @@ button {
 }
 
 .button-danger {
+    padding: 7px;
     background: linear-gradient(135deg, #ff4d6d, #ff758f);
     color: white;
 }
 
-.button-secondary {
-    border: 1px solid var(--border);
+.button-danger:hover {
+        box-shadow:
+        0 0 20px var(--accent-glow),
+        0 0 40px rgba(242, 2, 2, 0.373);
 }
 
-/* =========================
-   FORMS (TECH INPUTS)
-   ========================= */
+.button-secondary {
+    padding: 7px;
+    background: linear-gradient(135deg, #bdbeed, var(--accent));
+    color: white;
+    box-shadow: 0 0 0 transparent;
+}
 
-form {
+.button-secondary:hover {
+    box-shadow:
+        0 0 20px var(--accent-glow),
+        0 0 40px rgba(124, 124, 255, 0.3);
+}
+
+
+.form-narrow {
     max-width: 520px;
 }
 
@@ -220,21 +262,48 @@ select:focus {
    ========================= */
 
 .avatar {
-    width: 104px;
-    height: 104px;
+    width: 200px;
+    height: 200px;
     border-radius: 50%;
     object-fit: cover;
     border: 2px solid var(--accent);
     box-shadow: 0 0 20px var(--accent-glow);
 }
+.cosplay-entry-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 1rem;
+}
 
-.event-image {
+
+.cosplay-entry {
     width: 100%;
-    max-height: 320px;
+    height: 320px;
     object-fit: cover;
     border-radius: var(--radius);
-    margin-bottom: 1rem;
-    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+}
+
+
+.entry-image {
+    display: inline-flex;
+    flex-direction: column;
+    gap: 0.5rem;
+}
+
+
+.event-image {
+    width: auto;
+    height: 320px;
+}
+
+input[name$="-clear"],
+label[for$="avatar-clear_id"] {
+    display: none !important;
+}
+
+input[name$="-clear"],
+label[for$="image-clear_id"] {
+    display: none !important;
 }
 
 /* =========================
@@ -290,3 +359,20 @@ a:hover {
     color: var(--accent);
 }
 
+@media (max-width: 768px) {
+    .profile-layout {
+        grid-template-columns: 1fr;
+    }
+}
+
+@media (min-width: 768px) {
+    .cosplay-entry-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+@media (min-width: 1100px) {
+    .cosplay-entry-grid {
+        grid-template-columns: repeat(3, 1fr);
+    }
+}

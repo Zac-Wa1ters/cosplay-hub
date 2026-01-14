@@ -2,14 +2,30 @@
 {% block content %}
 {% load static %}
 
-{% if event.image %}
-    <img src="{{ event.image.url }}" alt="Event image" height="180" width="auto">
-{% else %}
-    <img src="{% static 'community/images/no-image.jpg' %}" alt="Default event image" height="180" width="auto">
-{% endif %}
-<form method="post" enctype="multipart/form-data">
+<p>Event image:</p>
+<div id="event-image-container">
+<img
+    id="event-image-preview"
+    class="event-image"
+    src="{% if event.image %}{{ event.image.url }}{% else %}{% static 'community/images/default_event.png' %}{% endif %}"
+    data-default-src="{% static 'community/images/default_event.png' %}"
+    alt=""
+>
+
+</div>
+
+<button type="button" class="button-danger" onclick="previewClearEventImage()">
+    Remove Event Image
+</button>
+
+
+
+<form method="post" enctype="multipart/form-data" class="form-narrow">
     {% csrf_token %}
     {{ form.as_p }}
-    <button type="submit">Save</button>
+    <button type="submit" class="button-primary">Save</button>
 </form>
+<p>
+<button onclick="window.history.back()" class="button-danger">Cancel</button>
+</p>
 {% endblock %}

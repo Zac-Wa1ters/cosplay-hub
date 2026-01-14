@@ -9,19 +9,28 @@
   </head>
   <body>
     <header>
-      <h1>
-        <a href="{% url 'hub_home' %}">Cosplay Hub</a>
-      </h1>
-      {% if request.user.is_superuser %}
-        <span class="admin-badge">Admin</span>
-      {% endif %}
+
+
 
       <nav class="main-nav">
+        <a href="{% url 'hub_home' %}"><h1>CosplayHouse</h1></a>
+              {% if request.user.is_superuser %}
+        <span class="admin-badge">Admin</span>
+      {% endif %}
         {% if user.is_authenticated %}
         <a href="{% url 'profile_detail' user.username %}" class="nav-link">My Profile</a>
-        <a href="{% url 'profile_edit' request.user.username %}">Edit Profile</a>
         <a href="{% url 'events_list' %}" class="nav-link">Events</a>
         <a href="{% url 'event_create' %}" class="nav-link">Create Event</a>
+        <a href="#" class="nav-link" onclick="document.getElementById('logout-form').submit(); return false;">Logout</a>
+        <form method="get" action="{% url 'search' %}" class="nav-search">
+            <input type="search" name="q" placeholder="Search…" value="{{ request.GET.q }}">
+        </form>
+
+<form id="logout-form" method="post" action="{% url 'logout' %}" style="display: none;">
+    {% csrf_token %}
+</form> 
+
+
         {% if pending_follow_requests > 0 %}
             <a href="{% url 'follow_requests' %}" class="nav-link">
                 Follow Requests ({{ pending_follow_requests }})
@@ -31,10 +40,7 @@
 
 
         
-        <form method="post" action="{% url 'logout' %}" class="logout-form">
-          {% csrf_token %}
-          <button type="submit" class="nav-link logout-button">Logout</button>
-        </form>
+
         {% else %}
           <a href="{% url 'login' %}" class="nav-link">Login</a>
           <a href="{% url 'signup' %}" class="nav-link">Sign Up</a>
@@ -43,10 +49,14 @@
 
       </nav>
 
-      <hr />
+    
     </header>
 
-    <main>{% block content %} {% endblock %}</main>
+    <main class = "page"><div class="container">{% block content %} {% endblock %}</div></main>
+
+
+<script src="{% static 'community/js/image_preview.js' %}"></script>
+
 
 
   </body>

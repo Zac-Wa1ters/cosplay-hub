@@ -5,9 +5,12 @@
 {% block content %}
 <h1>Login</h1>
 
-<form method="post">
+<form method="post" class="form-narrow">
     {% csrf_token %}
     {{ form.as_p }}
-    <button type="submit">Login</button>
+    <button type="submit" class="button-primary">Login</button>
 </form>
+<p>
+    <a href="{% url 'signup' %}" class="nav-link"><button class='button-primary'>Sign Up</button></a>
+</p>
 {% endblock %}

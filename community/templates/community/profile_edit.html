@@ -3,22 +3,30 @@
 
     <h1>Edit Profile</h1>
     {% load static %}
-    {% if profile.avatar %}
-        <p>Current profile picture:</p>
-        <img src="{{ profile.avatar.url }}" alt="Current profile avatar" height = "180" width = "auto">
-    {% else %}
-        <p>Current profile picture:</p>
-        <img src="{% static 'community/images/default_avatar.png' %}" alt="Default profile avatar" height = "180" width = "auto">
-    {% endif %}
+<p>Current profile picture:</p>
+<div id="avatar-container">
 
-<form method="post" enctype="multipart/form-data">
+    <img
+    id="avatar-preview"
+    class="avatar"
+    src="{% if profile.avatar %}{{ profile.avatar.url }}{% else %}{% static 'community/images/default_avatar.png' %}{% endif %}"
+    data-default-src="{% static 'community/images/default_avatar.png' %}"
+    alt=""
+>
+</div>
+
+
+<form method="post"  class="form-narrow" enctype="multipart/form-data">
     {% csrf_token %}
 
     <p>
         {{ form.avatar.label_tag }}
-        {{ form.avatar }}
+        {{ form.avatar }} 
     </p>
-
+    {% if profile.avatar %}
+        <button type="button" class="button-danger" onclick="previewClearAvatar()">Remove Avatar</button>
+    {% endif %}
+   
     <p>
         {{ form.display_name.label_tag }}
         {{ form.display_name }}
@@ -50,8 +58,10 @@
         Private profiles require you to approve follow requests.
     </p>
 
-    <button type="submit">Save</button>
-</form>
+    <button type="submit" class="button-primary">Save</button>
 
+
+    <a href="{% url 'profile_detail' user.username %}"><button class="button-danger">Cancel<button></a>
+</form>
 
 {% endblock %}

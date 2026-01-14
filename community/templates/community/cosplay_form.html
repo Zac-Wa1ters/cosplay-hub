@@ -6,7 +6,8 @@
     <form method="post">
         {% csrf_token %}
         {{ form.as_p }}
-        <button type="submit">Create</button>
+        <button type="submit" class="button-primary">Create</button>
+        <button onclick="window.history.back()" class="button-danger">Cancel</button>
     </form>
 
 {% endblock %}

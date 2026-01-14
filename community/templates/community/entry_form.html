@@ -8,7 +8,7 @@
 
 <h1>Add Entry for {{ cosplay.title }}</h1>
 
-<form method="post" enctype="multipart/form-data">
+<form method="post" enctype="multipart/form-data" class="form-narrow">
     {% csrf_token %}
 
     {{ form.as_p }}
@@ -16,7 +16,8 @@
     <label>Images</label>
     <input type="file" name="images" multiple>
 
-    <button type="submit">Post</button>
+    <button type="submit" class="button-primary">Post</button>
+    <button onclick="window.history.back()" class="button-danger">Cancel</button>
 </form>
 
 {% endblock %}

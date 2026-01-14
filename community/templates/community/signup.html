@@ -6,14 +6,14 @@
 {% block content %}
 <h1>Create an Account</h1>
 
-<form method="post">
+<form method="post" class="form-narrow">
     {% csrf_token %}
     {{ form.as_p }}
-    <button type="submit">Sign Up</button>
+    <button type="submit" class="button-primary">Sign Up</button>
 </form>
 
 <p>
     Already have an account?
-    <a href="{% url 'login' %}">Log in</a>
+    <a href="{% url 'login' %}"><button class="button-primary">Log in</button></a>
 </p>
 {% endblock %}
