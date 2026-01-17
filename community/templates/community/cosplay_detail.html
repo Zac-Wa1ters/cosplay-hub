@@ -2,6 +2,7 @@
 {% block title %}{{ cosplay.title }} — Cosplay Hub{% endblock %}
 
 {% block content %}
+<div class="card">
 <h1>{{ cosplay.title }}</h1>
 
 
@@ -41,7 +42,7 @@
         {% endfor %}
     </div>
 {% endif %}
-
+</div>
 
 
             {% if request.user.is_superuser or request.user == cosplay.owner %}

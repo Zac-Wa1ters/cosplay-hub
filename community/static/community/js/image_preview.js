@@ -4,6 +4,7 @@ document.addEventListener("DOMContentLoaded", function () {
         const input = document.getElementById(config.inputId);
         const preview = document.getElementById(config.previewId);
         const clearCheckbox = document.querySelector(`input[name="${config.clearName}"]`);
+        const removeBtn = document.getElementById(config.removeBtnId)
 
         if (!preview) return;
 
@@ -18,9 +19,8 @@ document.addEventListener("DOMContentLoaded", function () {
                 };
                 reader.readAsDataURL(file);
 
-                if (clearCheckbox) {
-                    clearCheckbox.checked = false;
-                }
+                if (clearCheckbox) clearCheckbox.checked = false;
+                if (removeBtn) removeBtn.style.display = "";
             });
         }
 
@@ -37,6 +37,7 @@ document.addEventListener("DOMContentLoaded", function () {
             if (preview.dataset.defaultSrc) {
                 preview.src = preview.dataset.defaultSrc;
             }
+            if(removeBtn) removeBtn.style.display = "none";
         };
     }
 
@@ -45,14 +46,16 @@ document.addEventListener("DOMContentLoaded", function () {
         inputId: "id_avatar",
         previewId: "avatar-preview",
         clearName: "avatar-clear",
-        clearFn: "previewClearAvatar"
+        clearFn: "previewClearAvatar",
+        removeBtnId: "remove-avatar-btn"
     });
 
     setupImagePreview({
         inputId: "id_image",
         previewId: "event-image-preview",
         clearName: "image-clear",
-        clearFn: "previewClearEventImage"
+        clearFn: "previewClearEventImage",
+        removeBtnId: "remove-event-image-btn"
     });
 
 });

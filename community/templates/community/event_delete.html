@@ -3,10 +3,9 @@
 <p>Are you sure you want to delete "{{ event.title }}"?</p>
 <form method="post">
     {% csrf_token %}
-    <button type="submit" class="button-danger">Confirm</button>
+    <button type="submit" class="button-danger">Confirm</button> | 
+    <button type="button" onclick="window.history.back()" class="button-danger">Cancel</button>
 </form>
 
-<p>
-    <button onclick="window.history.back()" class="button-primary">Cancel</button>
-</p>
+
 {% endblock %}

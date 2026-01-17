@@ -50,6 +50,49 @@ body {
     gap: 2rem;
     align-items: start;
 }
+
+.event-layout {
+    display: grid;
+    grid-template-columns: 1fr 2fr;
+    gap: 2rem;
+    align-items: start;
+}
+
+.event-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 1.5rem;
+    width: 100%;
+}
+
+.event-card {
+    display: flex;
+    flex-direction: column;
+}
+
+.event-grid .event-image-preview {
+    width: 100%;
+    height: 220px;
+    object-fit: contain;
+    border-radius: var(--radius);
+    padding: 0.5rem;
+    display: block;
+}
+
+.event-card img {
+    flex-shrink: 0;
+}
+
+
+
+.pagination {
+    margin-top: 2rem;
+    display: flex;
+    justify-content: center;
+    gap: 1.5rem;
+    align-items: center;
+}
+
 /* =========================
    LAYOUT
    ========================= */
@@ -84,7 +127,9 @@ body {
 }
 
 .main-nav h1{
+    font-family: "Papyrus", "Herculanum", fantasy;
     margin-top: 10px;
+    margin-bottom: -5px;
     justify-content: left;
     align-items: center;
     display: flex;
@@ -117,6 +162,11 @@ body {
 .main-nav a:hover::after,
 .main-nav button:hover::after {
     width: 100%;
+}
+
+
+.nav-search{
+    padding: 5px;
 }
 
 /* =========================
@@ -181,10 +231,12 @@ button {
     cursor: pointer;
     background: transparent;
     color: var(--text);
+    
 }
 
 .button-primary {
-    padding: 7px;
+    padding-left: 15px;
+    padding-right: 15px;
     background: linear-gradient(135deg, #bdbeed, var(--accent));
     color: white;
     box-shadow: 0 0 0 transparent;
@@ -197,7 +249,8 @@ button {
 }
 
 .button-danger {
-    padding: 7px;
+    padding-left: 15px;
+    padding-right: 15px;
     background: linear-gradient(135deg, #ff4d6d, #ff758f);
     color: white;
 }
@@ -209,7 +262,8 @@ button {
 }
 
 .button-secondary {
-    padding: 7px;
+    padding-left: 15px;
+    padding-right: 15px;
     background: linear-gradient(135deg, #bdbeed, var(--accent));
     color: white;
     box-shadow: 0 0 0 transparent;
@@ -245,9 +299,15 @@ select {
     border-radius: var(--radius);
     border: 1px solid var(--border);
     font: inherit;
-    background: rgba(10, 14, 30, 0.8);
+    background: rgba(57, 85, 197, 0.407);
     color: var(--text);
 }
+
+input[type="date"]::-webkit-calendar-picker-indicator,
+input[type="time"]::-webkit-calendar-picker-indicator {
+    filter: invert(1) brightness(1.2);
+}
+
 
 input:focus,
 textarea:focus,
@@ -293,7 +353,7 @@ select:focus {
 
 .event-image {
     width: auto;
-    height: 320px;
+    height: 35vw;
 }
 
 input[name$="-clear"],
@@ -363,6 +423,9 @@ a:hover {
     .profile-layout {
         grid-template-columns: 1fr;
     }
+    .event-layout {
+        grid-template-columns: 1fr;
+    }
 }
 
 @media (min-width: 768px) {
@@ -374,5 +437,17 @@ a:hover {
 @media (min-width: 1100px) {
     .cosplay-entry-grid {
         grid-template-columns: repeat(3, 1fr);
+    }
+}
+
+@media (min-width: 768px) {
+    .event-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+@media (min-width: 1200px) {
+    .event-grid {
+        grid-template-columns: repeat(4, 1fr);
     }
 }

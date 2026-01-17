@@ -151,9 +151,9 @@ class Follow(models.Model):
         return f"{self.follower} → {self.following} ({self.status})"
 
 class Event(models.Model):
-    title = models.CharField(max_length=200)
+    title = models.CharField(max_length=100)
     description = models.TextField(blank=True)
-    location = models.CharField(max_length=200, blank=True)
+    location = models.CharField(max_length=100, blank=True)
     date = models.DateField(null=True, blank=True)
     time = models.TimeField(null=True, blank=True)
     creator = models.ForeignKey(User, on_delete=models.CASCADE, related_name="events")

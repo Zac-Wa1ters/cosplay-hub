@@ -2,10 +2,11 @@
 {% endblock %} {% block content %}
 
     <h1>Create Cosplay</h1>
-
+<div class="card">
     <form method="post">
         {% csrf_token %}
         {{ form.as_p }}
+    </div>
         <button type="submit" class="button-primary">Create</button>
         <button onclick="window.history.back()" class="button-danger">Cancel</button>
     </form>

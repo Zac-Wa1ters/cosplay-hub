@@ -11,9 +11,10 @@
     
     <form method="post" action="{% url 'cosplay_delete' cosplay.id %}">
         {% csrf_token %}
-        <button type="submit" class="button-danger">Delete Cosplay</button>
+        <button type="submit" class="button-danger">Delete Cosplay</button> | 
+        <button type="button" onclick="window.history.back()" class="button-danger">Cancel</button>
     </form>
-        <p><button onclick="window.history.back()" class="button-secondary">Cancel</button></p>
+
 
 
 

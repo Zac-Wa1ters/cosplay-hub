@@ -1,7 +1,7 @@
 {% extends "base.html" %}
 {% block content %}
 {% load static %}
-
+<div class="card">
 <p>Event image:</p>
 <div id="event-image-container">
 <img
@@ -14,18 +14,26 @@
 
 </div>
 
-<button type="button" class="button-danger" onclick="previewClearEventImage()">
-    Remove Event Image
-</button>
+    {% if event.image %}
+    <button
+        type="button"
+        id="remove-event-image-btn"
+        class="button-danger"
+        onclick="previewClearEventImage()">
+        Remove Event Image
+    </button>
+    {% endif %}
+
 
 
 
 <form method="post" enctype="multipart/form-data" class="form-narrow">
     {% csrf_token %}
     {{ form.as_p }}
-    <button type="submit" class="button-primary">Save</button>
+</div>
+    <button type="submit" class="button-primary">Save</button> | 
+    <button type="button" onclick="window.history.back()" class="button-danger">Cancel</button>
 </form>
-<p>
-<button onclick="window.history.back()" class="button-danger">Cancel</button>
-</p>
+
+
 {% endblock %}

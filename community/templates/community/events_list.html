@@ -1,9 +1,72 @@
 {% extends "base.html" %}
+
+{% block title %}Events{% endblock %}
+
 {% block content %}
 <h1>Events</h1>
-{% for event in events %}
-    <p><a href="{% url 'event_detail' event.id %}">{{ event.title }}</a></p>
-{% empty %}
-    <p>No events yet.</p>
-{% endfor %}
+
+{% if page_obj and page_obj.object_list %}
+<div class="container">
+    <div class="event-grid">
+        {% for event in page_obj %}
+            <div class="card event-card">
+
+                {% if event.image %}
+                    <img
+                        src="{{ event.image.url }}"
+                        alt="{{ event.title }}"
+                        class="event-image-preview"
+                    >
+                {% endif %}
+
+                <h3>{{ event.title }}</h3>
+
+                {% if event.location %}
+                    <p class="muted">{{ event.location }}</p>
+                {% endif %}
+
+                {% if event.date %}
+                    <p class="muted">
+                        {{ event.date }}
+                        {% if event.time %}
+                            · {{ event.time }}
+                        {% endif %}
+                    </p>
+                {% endif %}
+
+                <a href="{% url 'event_detail' event.id %}">
+                    View Event
+                </a>
+
+            </div>
+        {% endfor %}
+        </div>
+    </div>
+
+    {% if page_obj.has_other_pages %}
+        <nav class="pagination">
+            {% if page_obj.has_previous %}
+                <a href="?page={{ page_obj.previous_page_number }}">
+                    Previous
+                </a>
+            {% endif %}
+
+            <span class="muted">
+                Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}
+            </span>
+
+            {% if page_obj.has_next %}
+                <a href="?page={{ page_obj.next_page_number }}">
+                    Next
+                </a>
+            {% endif %}
+        </nav>
+    {% endif %}
+
+{% else %}
+    <div class="empty-state">
+        <p>No events available.</p>
+    </div>
+{% endif %}
+
 {% endblock %}

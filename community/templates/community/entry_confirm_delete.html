@@ -9,10 +9,9 @@
 
 <form method="post">
     {% csrf_token %}
-    <button type="submit" class="button-danger">Yes, delete</button>
+    <button type="submit" class="button-danger">Yes, delete</button> | 
+    <button type="button" onclick="window.history.back()" class="button-danger">No, Cancel</button>
 </form>
 
-<p>
-    <button onclick="window.history.back()" class="button-danger">Cancel</button>
-</p>
+
 {% endblock %}

@@ -4,6 +4,7 @@ from django.contrib.auth.models import User
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth import login
+from django.core.paginator import Paginator
 from django.db.models import Q
 from .forms import *
 from .models import *
@@ -330,8 +331,12 @@ def signup(request):
     )
 
 def events_list(request):
-    events = Event.objects.filter(is_archived=False).order_by("date")
-    return render(request, "community/events_list.html", {"events": events})
+    events = Event.objects.filter(is_archived=False).order_by("-created_at")
+    paginator = Paginator(events, 9)
+    page_number = request.GET.get("page")
+    page_obj = paginator.get_page(page_number)
+
+    return render(request, "community/events_list.html", {"page_obj": page_obj})
 
 def event_detail(request, event_id):
     event = get_object_or_404(Event, id=event_id, is_archived=False)

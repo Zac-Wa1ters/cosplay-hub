@@ -2,6 +2,7 @@
 {% endblock %} {% block content %}
 
     <h1>Edit Profile</h1>
+    <div class="card">
     {% load static %}
 <p>Current profile picture:</p>
 <div id="avatar-container">
@@ -24,9 +25,15 @@
         {{ form.avatar }} 
     </p>
     {% if profile.avatar %}
-        <button type="button" class="button-danger" onclick="previewClearAvatar()">Remove Avatar</button>
+    <button
+        type="button"
+        id="remove-avatar-btn"
+        class="button-danger"
+        onclick="previewClearAvatar()">
+        Remove Avatar
+    </button>
     {% endif %}
-   
+
     <p>
         {{ form.display_name.label_tag }}
         {{ form.display_name }}
@@ -57,11 +64,9 @@
         Public profiles allow anyone to follow you immediately.<br>
         Private profiles require you to approve follow requests.
     </p>
-
-    <button type="submit" class="button-primary">Save</button>
-
-
-    <a href="{% url 'profile_detail' user.username %}"><button class="button-danger">Cancel<button></a>
+</div>
+    <button type="submit" class="button-primary">Save</button>  | 
+    <button type="button" onclick="window.history.back()" class="button-danger">Cancel</button>
 </form>
 
 {% endblock %}
