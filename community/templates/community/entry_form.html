@@ -16,7 +16,8 @@
     <label>Images</label>
     <input type="file" name="images" multiple>
 </div>
+
     <button type="submit" class="button-primary">Post</button> | 
-    <button type="button" onclick="window.history.back()" class="button-danger">Cancel</button>
+    <a href="{% url 'cosplay_detail' cosplay.id %}" ><button type="button" class="button-danger">Cancel</button></a>
 </form>
 {% endblock %}

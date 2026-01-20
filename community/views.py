@@ -163,14 +163,20 @@ def cosplay_delete(request, cosplay_id):
 def cosplay_entry_create(request, cosplay_id):
     cosplay = get_object_or_404(Cosplay, id=cosplay_id)
 
-    permission = require_owner_or_admin(request, cosplay.owner)
-    if permission:
-        return permission
-
+    if cosplay.owner != request.user:
+        return HttpResponseForbidden()
 
     if request.method == "POST":
         entry_form = CosplayEntryForm(request.POST)
         images = request.FILES.getlist("images")
+
+        content = entry_form.data.get("content", "").strip()
+
+        if not content and not images:
+            entry_form.add_error(
+                None,
+                "You must add text content or at least one image."
+            )
 
         if entry_form.is_valid():
             entry = entry_form.save(commit=False)
@@ -178,13 +184,25 @@ def cosplay_entry_create(request, cosplay_id):
             entry.save()
 
             for image in images:
-                CosplayEntryImage.objects.create(entry=entry,image=image)
+                CosplayEntryImage.objects.create(
+                    entry=entry,
+                    image=image
+                )
 
-            return redirect("cosplay_detail",cosplay_id=cosplay.id)
+            return redirect("cosplay_detail", cosplay_id=cosplay.id)
+
     else:
         entry_form = CosplayEntryForm()
 
-    return render(request,"community/entry_form.html",{"cosplay": cosplay,"form": entry_form,})
+    return render(
+        request,
+        "community/entry_form.html",
+        {
+            "cosplay": cosplay,
+            "form": entry_form,
+        }
+    )
+
 
 @login_required
 def cosplay_entry_edit(request, entry_id):
@@ -194,26 +212,43 @@ def cosplay_entry_edit(request, entry_id):
     permission = require_owner_or_admin(request, cosplay.owner)
     if permission:
         return permission
-    
+
     if request.method == "POST":
         form = CosplayEntryForm(request.POST, instance=entry)
-        images = request.FILES.getlist("images")
+        new_images = request.FILES.getlist("images")
+        content = request.POST.get("content", "").strip()
+
+        existing_image_count = entry.images.count()
+        resulting_image_count = existing_image_count + len(new_images)
+
+        if not content and resulting_image_count == 0:
+            entry.delete()
+            return redirect("cosplay_detail", cosplay_id=cosplay.id)
+
         if form.is_valid():
             form.save()
 
-            for image in images:
-                CosplayEntryImage.objects.create(entry=entry, image=image)
-
+            for image in new_images:
+                CosplayEntryImage.objects.create(
+                    entry=entry,
+                    image=image
+                )
 
             return redirect("cosplay_detail", cosplay_id=cosplay.id)
+
     else:
         form = CosplayEntryForm(instance=entry)
 
     return render(
         request,
         "community/entry_edit.html",
-        {"form": form, "entry": entry, "cosplay": cosplay}
+        {
+            "form": form,
+            "entry": entry,
+            "cosplay": cosplay,
+        }
     )
+
 
 @login_required
 def cosplay_entry_delete(request, entry_id):
@@ -236,7 +271,6 @@ def cosplay_entry_delete(request, entry_id):
             "cosplay": cosplay,
         }
     )
-
 @login_required
 def cosplay_entry_image_delete(request, image_id):
     image = get_object_or_404(CosplayEntryImage, id=image_id)
@@ -249,9 +283,17 @@ def cosplay_entry_image_delete(request, image_id):
 
     if request.method == "POST":
         image.delete()
+
+        has_text = bool(entry.content and entry.content.strip())
+        has_images = entry.images.exists()
+
+        if not has_text and not has_images:
+            entry.delete()
+
         return redirect("cosplay_detail", cosplay_id=cosplay.id)
 
     return HttpResponseForbidden()
+
 
 
 @login_required
@@ -313,7 +355,7 @@ def deny_follow(request, follow_id):
 
 def signup(request):
     if request.method == "POST":
-        form = UserCreationForm(request.POST)
+        form = CustomUserCreationForm(request.POST)
         if form.is_valid():
             user = form.save()
             login(request, user)
@@ -322,7 +364,7 @@ def signup(request):
                 username=user.username
             )
     else:
-        form = UserCreationForm()
+        form = CustomUserCreationForm()
 
     return render(
         request,

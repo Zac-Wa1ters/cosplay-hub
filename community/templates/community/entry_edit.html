@@ -34,7 +34,7 @@
     </p>
 
     <button type="submit" class="button-primary">Save Changes</button> | 
-    <button type="button" onclick="window.history.back()" class="button-danger">Cancel</button>
+    <a href="{% url 'cosplay_detail' cosplay.id %}" ><button type="button" class="button-danger">Cancel</button></a>
 </form>
 
 
